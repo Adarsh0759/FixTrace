@@ -1,0 +1,30 @@
+# Baseline B1: dense-vector retrieval only.
+# See docs/DECISIONS.md for why each condition exists and docs/research.md
+# for how these configs are consumed by research/scripts/run_baselines.py.
+
+condition: B1_dense_rag
+description: Dense embedding retrieval, no BM25, no version filtering, no verification.
+
+corpus:
+  libraries:
+    - pydantic
+    - sqlalchemy
+
+retrieval:
+  method: dense
+  top_k: 8
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+
+version_aware: false
+
+generation:
+  provider: anthropic
+  model: claude-sonnet-5-5
+  max_tokens: 1024
+  temperature: 0.0
+
+verification:
+  enabled: false
+
+decision:
+  abstention_enabled: false

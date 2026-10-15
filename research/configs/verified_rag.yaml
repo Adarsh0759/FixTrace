@@ -1,0 +1,42 @@
+# Baseline B4/B5: version_aware.yaml plus independent claim-level verification
+# and abstention. Set decision.abstention_enabled: false to get B4 instead of B5
+# without duplicating the whole file.
+
+condition: B5_verified_rag
+description: Full method - hybrid + version-aware retrieval, independent claim verification, and ANSWER/QUALIFY/ABSTAIN decisioning.
+
+corpus:
+  libraries:
+    - pydantic
+    - sqlalchemy
+
+retrieval:
+  method: hybrid
+  top_k: 8
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  bm25_weight: 0.5
+  dense_weight: 0.5
+  rrf_k: 60
+
+version_aware: true
+version_policy:
+  prefer_exact_version: true
+  allow_compatible_ranges: true
+  unknown_compatibility: keep_labeled_uncertain
+  preserve_conflicts: true
+
+generation:
+  provider: anthropic
+  model: claude-sonnet-5-5
+  max_tokens: 1024
+  temperature: 0.0
+
+verification:
+  enabled: true
+  # Generator-reported claim status is never trusted (DECISIONS.md 1.4) -
+  # the verifier independently re-checks each claim against the cited passage.
+  reject_invented_evidence_ids: true
+
+decision:
+  abstention_enabled: true
+  abstention_threshold: 0.5

@@ -1,0 +1,37 @@
+# Baseline B3: hybrid retrieval + version-aware filtering. Still no claim
+# verification - that's verified_rag.yaml (B4/B5).
+
+condition: B3_version_aware
+description: Hybrid retrieval with version-compatibility filtering applied; conflicting/unknown evidence preserved, never silently dropped (DECISIONS.md 1.6-1.7).
+
+corpus:
+  libraries:
+    - pydantic
+    - sqlalchemy
+
+retrieval:
+  method: hybrid
+  top_k: 8
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  bm25_weight: 0.5
+  dense_weight: 0.5
+  rrf_k: 60
+
+version_aware: true
+version_policy:
+  prefer_exact_version: true
+  allow_compatible_ranges: true
+  unknown_compatibility: keep_labeled_uncertain   # never silently "compatible"
+  preserve_conflicts: true
+
+generation:
+  provider: anthropic
+  model: claude-sonnet-5-5
+  max_tokens: 1024
+  temperature: 0.0
+
+verification:
+  enabled: false
+
+decision:
+  abstention_enabled: false

@@ -1,0 +1,33 @@
+# Baseline B2: hybrid BM25 + dense retrieval, merged via reciprocal rank fusion.
+# No version-aware filtering, no claim verification yet - see dense_rag.yaml
+# for the condition this builds on.
+
+condition: B2_hybrid_rag
+description: BM25 + dense retrieval merged with RRF, no version filtering, no verification.
+
+corpus:
+  libraries:
+    - pydantic
+    - sqlalchemy
+
+retrieval:
+  method: hybrid
+  top_k: 8
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  bm25_weight: 0.5
+  dense_weight: 0.5
+  rrf_k: 60
+
+version_aware: false
+
+generation:
+  provider: anthropic
+  model: claude-sonnet-5-5
+  max_tokens: 1024
+  temperature: 0.0
+
+verification:
+  enabled: false
+
+decision:
+  abstention_enabled: false
