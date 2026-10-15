@@ -8,26 +8,26 @@ source_url: "https://docs.sqlalchemy.org/en/20/changelog/migration_20.html"
 retrieved_at: "2026-10-15"
 ---
 
-# SQLAlchemy 2\.0 \- Major Migration Guide[¶](#sqlalchemy-2-0-major-migration-guide "Link to this heading")
+# SQLAlchemy 2.0 - Major Migration Guide
 
 
 
 Note for Readers
 
 
-SQLAlchemy 2\.0’s transition documents are separated into **two**
-documents \- one which details major API shifts from the 1\.x to 2\.x
+SQLAlchemy 2.0’s transition documents are separated into **two**
+documents - one which details major API shifts from the 1.x to 2.x
 series, and the other which details new features and behaviors relative
-to SQLAlchemy 1\.4:
+to SQLAlchemy 1.4:
 
 
-- [SQLAlchemy 2\.0 \- Major Migration Guide](#) \- this document, 1\.x to 2\.x API shifts
-- [What’s New in SQLAlchemy 2\.0?](whatsnew_20.html) \- new features and behaviors for SQLAlchemy 2\.0
+- [SQLAlchemy 2.0 - Major Migration Guide](#) - this document, 1.x to 2.x API shifts
+- [What’s New in SQLAlchemy 2.0?](whatsnew_20.html) - new features and behaviors for SQLAlchemy 2.0
 
 
-Readers who have already updated their 1\.4 application to follow
-SQLAlchemy 2\.0 engine and ORM conventions may navigate to
-[What’s New in SQLAlchemy 2\.0?](whatsnew_20.html) for an overview of new features and
+Readers who have already updated their 1.4 application to follow
+SQLAlchemy 2.0 engine and ORM conventions may navigate to
+[What’s New in SQLAlchemy 2.0?](whatsnew_20.html) for an overview of new features and
 capabilities.
 
 
@@ -36,11 +36,11 @@ capabilities.
 About this document
 
 
-This document describes changes between SQLAlchemy version 1\.4
-and SQLAlchemy version 2\.0\.
+This document describes changes between SQLAlchemy version 1.4
+and SQLAlchemy version 2.0.
 
 
-SQLAlchemy 2\.0 presents a major shift for a wide variety of key
+SQLAlchemy 2.0 presents a major shift for a wide variety of key
 SQLAlchemy usage patterns in both the Core and ORM components. The goal
 of this release is to make a slight readjustment in some of the most
 fundamental assumptions of SQLAlchemy since its early beginnings, and to
@@ -54,10 +54,10 @@ vast new community of data scientists and students of many different
 disciplines.
 
 
-SQLAlchemy started with Python 2\.3 which had no context managers, no
+SQLAlchemy started with Python 2.3 which had no context managers, no
 function decorators, Unicode as a second class feature, and a variety of
 other shortcomings that would be unknown today. The biggest changes in
-SQLAlchemy 2\.0 are targeting the residual assumptions left over from this
+SQLAlchemy 2.0 are targeting the residual assumptions left over from this
 early period in SQLAlchemy’s development as well as the leftover artifacts
 resulting from the incremental introduction of key API features such as
 [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.query.Query") and Declarative. It also hopes standardize some
@@ -66,12 +66,12 @@ newer capabilities that have proven to be very effective.
 
 
 
-## The 1\.4\-\>2\.0 Migration Path[¶](#the-1-4-2-0-migration-path "Link to this heading")
+## The 1.4->2.0 Migration Path
 
 
 The most prominent architectural features and API changes that are considered
-to be “SQLAlchemy 2\.0” were in fact released as fully available within the 1\.4
-series, to provide for a clean upgrade path from the 1\.x to the 2\.x series
+to be “SQLAlchemy 2.0” were in fact released as fully available within the 1.4
+series, to provide for a clean upgrade path from the 1.x to the 2.x series
 as well as to serve as a beta platform for the features themselves. These
 changes include:
 
@@ -85,11 +85,11 @@ changes include:
 
 
 The above bullets link to the description of these new paradigms as introduced
-in SQLAlchemy 1\.4\. in the [What’s New in SQLAlchemy 1\.4?](migration_14.html) document.
+in SQLAlchemy 1.4. in the [What’s New in SQLAlchemy 1.4?](migration_14.html) document.
 
 
-For SQLAlchemy 2\.0, all API features and behaviors
-that were marked as [deprecated for 2\.0](migration_14.html#deprecation-20-mode) are
+For SQLAlchemy 2.0, all API features and behaviors
+that were marked as [deprecated for 2.0](migration_14.html#deprecation-20-mode) are
 now finalized; in particular, major APIs that are **no longer present**
 include:
 
@@ -101,141 +101,141 @@ include:
 - Python 2 support
 
 
-The above bullets refer to the most prominent fully backwards\-incompatible
-changes that are finalized in the 2\.0 release. The migration path for
+The above bullets refer to the most prominent fully backwards-incompatible
+changes that are finalized in the 2.0 release. The migration path for
 applications to accommodate for these changes as well as others is framed as
-a transition path first into the 1\.4 series of SQLAlchemy where the “future”
-APIs are available to provide for the “2\.0” way of working, and then to the
-2\.0 series where the no\-longer\-used APIs above and others are removed.
+a transition path first into the 1.4 series of SQLAlchemy where the “future”
+APIs are available to provide for the “2.0” way of working, and then to the
+2.0 series where the no-longer-used APIs above and others are removed.
 
 
 The complete steps for this migration path are later in this document at
-[1\.x \-\> 2\.x Migration Overview](#migration-20-overview).
+[1.x -> 2.x Migration Overview](#migration-20-overview).
 
 
 
 
-## 1\.x \-\> 2\.x Migration Overview[¶](#x-2-x-migration-overview "Link to this heading")
+## 1.x -> 2.x Migration Overview
 
 
-The SQLAlchemy 2\.0 transition presents itself in the SQLAlchemy 1\.4 release as
+The SQLAlchemy 2.0 transition presents itself in the SQLAlchemy 1.4 release as
 a series of steps that allow an application of any size or complexity to be
-migrated to SQLAlchemy 2\.0 using a gradual, iterative process. Lessons learned
+migrated to SQLAlchemy 2.0 using a gradual, iterative process. Lessons learned
 from the Python 2 to Python 3 transition have inspired a system that intends to
 as great a degree as possible to not require any “breaking” changes, or any
 change that would need to be made universally or not at all.
 
 
-As a means of both proving the 2\.0 architecture as well as allowing a fully
-iterative transition environment, the entire scope of 2\.0’s new APIs and
-features are present and available within the 1\.4 series; this includes
+As a means of both proving the 2.0 architecture as well as allowing a fully
+iterative transition environment, the entire scope of 2.0’s new APIs and
+features are present and available within the 1.4 series; this includes
 major new areas of functionality such as the SQL caching system, the new ORM
 statement execution model, new transactional paradigms for both ORM and Core, a
 new ORM declarative system that unifies classical and declarative mapping,
 support for Python dataclasses, and asyncio support for Core and ORM.
 
 
-The steps to achieve 2\.0 migration are in the following subsections; overall,
-the general strategy is that once an application runs on 1\.4 with all warning
-flags turned on and does not emit any 2\.0\-deprecation warnings, it is now
-**mostly** cross\-compatible with SQLAlchemy 2\.0\. **Please note there may be
+The steps to achieve 2.0 migration are in the following subsections; overall,
+the general strategy is that once an application runs on 1.4 with all warning
+flags turned on and does not emit any 2.0-deprecation warnings, it is now
+**mostly** cross-compatible with SQLAlchemy 2.0. **Please note there may be
 additional API and behavioral changes that may behave differently when running
-against SQLAlchemy 2\.0; always test code against an actual SQLAlchemy 2\.0
+against SQLAlchemy 2.0; always test code against an actual SQLAlchemy 2.0
 release as the final step in migrating**.
 
 
 
-### First Prerequisite, step one \- A Working 1\.3 Application[¶](#first-prerequisite-step-one-a-working-1-3-application "Link to this heading")
+### First Prerequisite, step one - A Working 1.3 Application
 
 
-The first step is getting an existing application onto 1\.4, in the case of
-a typical non trivial application, is to ensure it runs on SQLAlchemy 1\.3 with
-no deprecation warnings. Release 1\.4 does have a few changes linked to
+The first step is getting an existing application onto 1.4, in the case of
+a typical non trivial application, is to ensure it runs on SQLAlchemy 1.3 with
+no deprecation warnings. Release 1.4 does have a few changes linked to
 conditions that warn in previous version, including some warnings that were
-introduced in 1\.3, in particular some changes to the behavior of the
+introduced in 1.3, in particular some changes to the behavior of the
 [`relationship.viewonly`](../orm/relationship_api.html#sqlalchemy.orm.relationship.params.viewonly "sqlalchemy.orm.relationship") and
 [`relationship.sync_backref`](../orm/relationship_api.html#sqlalchemy.orm.relationship.params.sync_backref "sqlalchemy.orm.relationship") flags.
 
 
 For best results, the application should be able to run, or pass all of its
-tests, with the latest SQLAlchemy 1\.3 release with no SQLAlchemy deprecation
+tests, with the latest SQLAlchemy 1.3 release with no SQLAlchemy deprecation
 warnings; these are warnings emitted for the [`SADeprecationWarning`](../core/exceptions.html#sqlalchemy.exc.SADeprecationWarning "sqlalchemy.exc.SADeprecationWarning")
 class.
 
 
 
 
-### First Prerequisite, step two \- A Working 1\.4 Application[¶](#first-prerequisite-step-two-a-working-1-4-application "Link to this heading")
+### First Prerequisite, step two - A Working 1.4 Application
 
 
-Once the application is good to go on SQLAlchemy 1\.3, the next step is to get
-it running on SQLAlchemy 1\.4\. In the vast majority of cases, applications
-should run without problems from SQLAlchemy 1\.3 to 1\.4\. However, it’s always
-the case between any 1\.x and 1\.y release, APIs and behaviors have changed
+Once the application is good to go on SQLAlchemy 1.3, the next step is to get
+it running on SQLAlchemy 1.4. In the vast majority of cases, applications
+should run without problems from SQLAlchemy 1.3 to 1.4. However, it’s always
+the case between any 1.x and 1.y release, APIs and behaviors have changed
 either subtly or in some cases a little less subtly, and the SQLAlchemy
 project always gets a good deal of regression reports for the first few
 months.
 
 
-The 1\.x\-\>1\.y release process usually has a few changes around the margins
+The 1.x->1.y release process usually has a few changes around the margins
 that are a little bit more dramatic and are based around use cases that are
-expected to be very seldom if at all used. For 1\.4, the changes identified
+expected to be very seldom if at all used. For 1.4, the changes identified
 as being in this realm are as follows:
 
 
-- [The URL object is now immutable](migration_14.html#change-5526) \- this impacts code that would be manipulating the
+- [The URL object is now immutable](migration_14.html#change-5526) - this impacts code that would be manipulating the
 [`URL`](../core/engines.html#sqlalchemy.engine.URL "sqlalchemy.engine.URL") object and may impact code that makes use of the
 [`CreateEnginePlugin`](../core/connections.html#sqlalchemy.engine.CreateEnginePlugin "sqlalchemy.engine.CreateEnginePlugin") extension point. This is an uncommon
 case but may affect in particular some test suites that are making use of
 special database provisioning logic. A github search for code that uses
-the relatively new and little\-known [`CreateEnginePlugin`](../core/connections.html#sqlalchemy.engine.CreateEnginePlugin "sqlalchemy.engine.CreateEnginePlugin")
+the relatively new and little-known [`CreateEnginePlugin`](../core/connections.html#sqlalchemy.engine.CreateEnginePlugin "sqlalchemy.engine.CreateEnginePlugin")
 class found two projects that were unaffected by the change.
-- [A SELECT statement is no longer implicitly considered to be a FROM clause](migration_14.html#change-4617) \- this change may impact code that was somehow relying
+- [A SELECT statement is no longer implicitly considered to be a FROM clause](migration_14.html#change-4617) - this change may impact code that was somehow relying
 upon behavior that was mostly unusable in the [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") construct,
 where it would create unnamed subqueries that were usually confusing and
-non\-working. These subqueries would be rejected by most databases in any
+non-working. These subqueries would be rejected by most databases in any
 case as a name is usually required except on SQLite, however it is possible
 some applications will need to adjust some queries that are inadvertently
 relying upon this.
-- [select().join() and outerjoin() add JOIN criteria to the current query, rather than creating a subquery](migration_14.html#change-select-join) \- somewhat related, the [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") class
+- [select().join() and outerjoin() add JOIN criteria to the current query, rather than creating a subquery](migration_14.html#change-select-join) - somewhat related, the [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") class
 featured `.join()` and `.outerjoin()` methods that implicitly created a
 subquery and then returned a [`Join`](../core/selectable.html#sqlalchemy.sql.expression.Join "sqlalchemy.sql.expression.Join") construct, which again would
 be mostly useless and produced lots of confusion. The decision was made to
-move forward with the vastly more useful 2\.0\-style join\-building approach
+move forward with the vastly more useful 2.0-style join-building approach
 where these methods now work the same way as the ORM [`Query.join()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join")
 method.
-- [Many Core and ORM statement objects now perform much of their construction and validation in the compile phase](migration_14.html#change-deferred-construction) \- some error messages related to
+- [Many Core and ORM statement objects now perform much of their construction and validation in the compile phase](migration_14.html#change-deferred-construction) - some error messages related to
 construction of a [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") or [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") may not be
 emitted until compilation / execution, rather than at construction time.
 This might impact some test suites that are testing against failure modes.
 
 
-For the full overview of SQLAlchemy 1\.4 changes, see the
-[What’s New in SQLAlchemy 1\.4?](migration_14.html) document.
+For the full overview of SQLAlchemy 1.4 changes, see the
+[What’s New in SQLAlchemy 1.4?](migration_14.html) document.
 
 
 
 
-### Migration to 2\.0 Step One \- Python 3 only (Python 3\.7 minimum for 2\.0 compatibility)[¶](#migration-to-2-0-step-one-python-3-only-python-3-7-minimum-for-2-0-compatibility "Link to this heading")
+### Migration to 2.0 Step One - Python 3 only (Python 3.7 minimum for 2.0 compatibility)
 
 
-SQLAlchemy 2\.0 was first inspired by the fact that Python 2’s EOL was in 2020\.
+SQLAlchemy 2.0 was first inspired by the fact that Python 2’s EOL was in 2020.
 SQLAlchemy is taking a longer period of time than other major projects to drop
-Python 2\.7 support. However, in order to use SQLAlchemy 2\.0, the application
-will need to be runnable on at least **Python 3\.7**. SQLAlchemy 1\.4 supports
-Python 3\.6 or newer within the Python 3 series; throughout the 1\.4 series, the
-application can remain running on Python 2\.7 or on at least Python 3\.6\. Version
-2\.0 however starts at Python 3\.7\.
+Python 2.7 support. However, in order to use SQLAlchemy 2.0, the application
+will need to be runnable on at least **Python 3.7**. SQLAlchemy 1.4 supports
+Python 3.6 or newer within the Python 3 series; throughout the 1.4 series, the
+application can remain running on Python 2.7 or on at least Python 3.6. Version
+2.0 however starts at Python 3.7.
 
 
 
 
-### Migration to 2\.0 Step Two \- Turn on RemovedIn20Warnings[¶](#migration-to-2-0-step-two-turn-on-removedin20warnings "Link to this heading")
+### Migration to 2.0 Step Two - Turn on RemovedIn20Warnings
 
 
-SQLAlchemy 1\.4 features a conditional deprecation warning system inspired
-by the Python “\-3” flag that would indicate legacy patterns in a running
-application. For SQLAlchemy 1\.4, the `RemovedIn20Warning`
+SQLAlchemy 1.4 features a conditional deprecation warning system inspired
+by the Python “-3” flag that would indicate legacy patterns in a running
+application. For SQLAlchemy 1.4, the `RemovedIn20Warning`
 deprecation class is emitted only when an environment variable
 `SQLALCHEMY_WARN_20` is set to either of `true` or `1`.
 
@@ -266,7 +266,7 @@ print(result.fetchall())
 The above program uses several patterns that many users will already identify
 as “legacy”, namely the use of the `Engine.execute()` method
 that’s part of the “connectionless execution” API. When we run the above
-program against 1\.4, it returns a single line:
+program against 1.4, it returns a single line:
 
 
 
@@ -276,7 +276,7 @@ $ python test3.py
 ```
 
 
-To enable “2\.0 deprecations mode”, we enable the `SQLALCHEMY_WARN_20=1`
+To enable “2.0 deprecations mode”, we enable the `SQLALCHEMY_WARN_20=1`
 variable, and additionally ensure that a [warnings filter](https://docs.python.org/3/library/warnings.html#the-warnings-filter) that will not
 suppress any warnings is selected:
 
@@ -319,7 +319,7 @@ test3.py:14: RemovedIn20Warning: The Engine.execute() function/method is conside
 ```
 
 
-With the above guidance, we can migrate our program to use 2\.0 styles, and
+With the above guidance, we can migrate our program to use 2.0 styles, and
 as a bonus our program is much clearer:
 
 
@@ -352,14 +352,14 @@ with engine.connect() as connection:
 ```
 
 
-The goal of “2\.0 deprecations mode” is that a program which runs with no
-`RemovedIn20Warning` warnings with “2\.0 deprecations mode” turned
-on is then ready to run in SQLAlchemy 2\.0\.
+The goal of “2.0 deprecations mode” is that a program which runs with no
+`RemovedIn20Warning` warnings with “2.0 deprecations mode” turned
+on is then ready to run in SQLAlchemy 2.0.
 
 
 
 
-### Migration to 2\.0 Step Three \- Resolve all RemovedIn20Warnings[¶](#migration-to-2-0-step-three-resolve-all-removedin20warnings "Link to this heading")
+### Migration to 2.0 Step Three - Resolve all RemovedIn20Warnings
 
 
 Code can be developed iteratively to resolve these warnings. Within
@@ -373,7 +373,7 @@ that will select for particular subsets of warnings to either raise an
 exception, or to be ignored (or logged). Work with just one subgroup of warnings
 at a time. Below, a warnings filter is configured for an application where
 the change to the Core level `.execute()` calls will be needed in order
-for all tests to pass, but all other 2\.0\-style warnings will be suppressed:
+for all tests to pass, but all other 2.0-style warnings will be suppressed:
 
 
 
@@ -400,7 +400,7 @@ for msg in [
         category=exc.RemovedIn20Warning,
     )
 ```
-3. As each sub\-category of warnings are resolved in the application, new
+3. As each sub-category of warnings are resolved in the application, new
 warnings that are caught by the “always” filter can be added to the list
 of “errors” to be resolved.
 4. Once no more warnings are emitted, the filter can be removed.
@@ -408,17 +408,17 @@ of “errors” to be resolved.
 
 
 
-### Migration to 2\.0 Step Four \- Use the `future` flag on Engine[¶](#migration-to-2-0-step-four-use-the-future-flag-on-engine "Link to this heading")
+### Migration to 2.0 Step Four - Use the `future` flag on Engine
 
 
 The [`Engine`](../core/connections.html#sqlalchemy.engine.Engine "sqlalchemy.engine.Engine") object features an updated
-transaction\-level API in version 2\.0\. In 1\.4, this new API is available
+transaction-level API in version 2.0. In 1.4, this new API is available
 by passing the flag `future=True` to the [`create_engine()`](../core/engines.html#sqlalchemy.create_engine "sqlalchemy.create_engine")
 function.
 
 
 When the [`create_engine.future`](../core/engines.html#sqlalchemy.create_engine.params.future "sqlalchemy.create_engine") flag is used, the [`Engine`](../core/connections.html#sqlalchemy.engine.Engine "sqlalchemy.engine.Engine")
-and [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") objects support the 2\.0 API fully and not at all
+and [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") objects support the 2.0 API fully and not at all
 any legacy features, including the new argument format for [`Connection.execute()`](../core/connections.html#sqlalchemy.engine.Connection.execute "sqlalchemy.engine.Connection.execute"),
 the removal of “implicit autocommit”, string statements require the
 [`text()`](../core/sqlelement.html#sqlalchemy.sql.expression.text "sqlalchemy.sql.expression.text") construct unless the [`Connection.exec_driver_sql()`](../core/connections.html#sqlalchemy.engine.Connection.exec_driver_sql "sqlalchemy.engine.Connection.exec_driver_sql")
@@ -437,7 +437,7 @@ The new engine is described at [`Engine`](../core/connections.html#sqlalchemy.en
 [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object features
 [`Connection.commit()`](../core/connections.html#sqlalchemy.engine.Connection.commit "sqlalchemy.engine.Connection.commit") and
 [`Connection.rollback()`](../core/connections.html#sqlalchemy.engine.Connection.rollback "sqlalchemy.engine.Connection.rollback") methods, to support the new
-“commit\-as\-you\-go” mode of operation:
+“commit-as-you-go” mode of operation:
 
 
 
@@ -455,11 +455,11 @@ with engine.connect() as conn:
 
 
 
-### Migration to 2\.0 Step Five \- Use the `future` flag on Session[¶](#migration-to-2-0-step-five-use-the-future-flag-on-session "Link to this heading")
+### Migration to 2.0 Step Five - Use the `future` flag on Session
 
 
 The [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") object also features an updated transaction/connection
-level API in version 2\.0\. This API is available in 1\.4 using the
+level API in version 2.0. This API is available in 1.4 using the
 [`Session.future`](../orm/session_api.html#sqlalchemy.orm.Session.params.future "sqlalchemy.orm.Session") flag on [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") or on
 [`sessionmaker`](../orm/session_api.html#sqlalchemy.orm.sessionmaker "sqlalchemy.orm.sessionmaker").
 
@@ -482,7 +482,7 @@ stack of transactions at once, rather than attempting to keep
 
 
 The [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") also supports more flexible creational patterns
-in 1\.4 which are now closely matched to the patterns used by the
+in 1.4 which are now closely matched to the patterns used by the
 [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object. Highlights include that the
 [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") may be used as a context manager:
 
@@ -513,7 +513,7 @@ with Session.begin() as session:
 ```
 
 
-See the section [Session\-level vs. Engine level transaction control](../orm/session_transaction.html#orm-session-vs-engine) for a comparison of
+See the section [Session-level vs. Engine level transaction control](../orm/session_transaction.html#orm-session-vs-engine) for a comparison of
 [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") creational patterns compared to those of
 [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection").
 
@@ -529,14 +529,14 @@ major API modifications.
 
 
 
-### Migration to 2\.0 Step Six \- Add `__allow_unmapped__` to explicitly typed ORM models[¶](#migration-to-2-0-step-six-add-allow-unmapped-to-explicitly-typed-orm-models "Link to this heading")
+### Migration to 2.0 Step Six - Add `__allow_unmapped__` to explicitly typed ORM models
 
 
-SQLAlchemy 2\.0 has new support for runtime interpretation of [**PEP 484**](https://peps.python.org/pep-0484/) typing annotations
+SQLAlchemy 2.0 has new support for runtime interpretation of [**PEP 484**](https://peps.python.org/pep-0484/) typing annotations
 on ORM models. A requirement of these annotations is that they must make use
 of the [`Mapped`](../orm/internals.html#sqlalchemy.orm.Mapped "sqlalchemy.orm.Mapped") generic container. Annotations which don’t use
 [`Mapped`](../orm/internals.html#sqlalchemy.orm.Mapped "sqlalchemy.orm.Mapped") which link to constructs such as [`relationship()`](../orm/relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")
-will raise errors in Python, as they suggest mis\-configurations.
+will raise errors in Python, as they suggest mis-configurations.
 
 
 SQLAlchemy applications that use the [Mypy plugin](../orm/extensions/mypy.html) with
@@ -572,7 +572,7 @@ class Bar(Base):
 Above, the `Foo.bars` and `Bar.foo` [`relationship()`](../orm/relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship") declarations
 will raise an error at class construction time because they don’t use
 [`Mapped`](../orm/internals.html#sqlalchemy.orm.Mapped "sqlalchemy.orm.Mapped") (by contrast, the annotations that use
-[`Column`](../core/metadata.html#sqlalchemy.schema.Column "sqlalchemy.schema.Column") are ignored by 2\.0, as these are able to be
+[`Column`](../core/metadata.html#sqlalchemy.schema.Column "sqlalchemy.schema.Column") are ignored by 2.0, as these are able to be
 recognized as a legacy configuration style). To allow all annotations that
 don’t use [`Mapped`](../orm/internals.html#sqlalchemy.orm.Mapped "sqlalchemy.orm.Mapped") to pass without error,
 the `__allow_unmapped__` attribute may be used on the class or any
@@ -587,7 +587,7 @@ Note
 The `__allow_unmapped__` directive applies **only** to the
 *runtime* behavior of the ORM. It does not affect the behavior of
 Mypy, and the above mapping as written still requires that the Mypy
-plugin be installed. For fully 2\.0 style ORM models that will type
+plugin be installed. For fully 2.0 style ORM models that will type
 correctly under Mypy *without* a plugin, follow the migration steps
 at [Migrating an Existing Mapping](whatsnew_20.html#whatsnew-20-orm-typing-migration).
 
@@ -630,45 +630,45 @@ class Bar(Base):
 
 
 
-Changed in version 2\.0\.0beta3: \- improved the `__allow_unmapped__`
-attribute support to allow for 1\.4\-style explicit annotated relationships
+Changed in version 2.0.0beta3: - improved the `__allow_unmapped__`
+attribute support to allow for 1.4-style explicit annotated relationships
 that don’t use [`Mapped`](../orm/internals.html#sqlalchemy.orm.Mapped "sqlalchemy.orm.Mapped") to remain usable.
 
 
 
 
 
-### Migration to 2\.0 Step Seven \- Test against a SQLAlchemy 2\.0 Release[¶](#migration-to-2-0-step-seven-test-against-a-sqlalchemy-2-0-release "Link to this heading")
+### Migration to 2.0 Step Seven - Test against a SQLAlchemy 2.0 Release
 
 
-As mentioned previously, SQLAlchemy 2\.0 has additional API and behavioral
+As mentioned previously, SQLAlchemy 2.0 has additional API and behavioral
 changes that are intended to be backwards compatible, however may introduce
 some incompatibilities nonetheless. Therefore after the overall porting
 process is complete, the final step is to test against the most recent release
-of SQLAlchemy 2\.0 to correct for any remaining issues that might be present.
+of SQLAlchemy 2.0 to correct for any remaining issues that might be present.
 
 
-The guide at [What’s New in SQLAlchemy 2\.0?](whatsnew_20.html) provides an overview of
-new features and behaviors for SQLAlchemy 2\.0 which extend beyond the base
-set of 1\.4\-\>2\.0 API changes.
-
-
-
-
-
-## 2\.0 Migration \- Core Connection / Transaction[¶](#migration-core-connection-transaction "Link to this heading")
+The guide at [What’s New in SQLAlchemy 2.0?](whatsnew_20.html) provides an overview of
+new features and behaviors for SQLAlchemy 2.0 which extend beyond the base
+set of 1.4->2.0 API changes.
 
 
 
-### Library\-level (but not driver level) “Autocommit” removed from both Core and ORM[¶](#library-level-but-not-driver-level-autocommit-removed-from-both-core-and-orm "Link to this heading")
+
+
+## 2.0 Migration - Core Connection / Transaction
+
+
+
+### Library-level (but not driver level) “Autocommit” removed from both Core and ORM
 
 
 **Synopsis**
 
 
-In SQLAlchemy 1\.x, the following statements will automatically commit
+In SQLAlchemy 1.x, the following statements will automatically commit
 the underlying DBAPI transaction, but in SQLAlchemy
-2\.0 this will not occur:
+2.0 this will not occur:
 
 
 
@@ -705,10 +705,10 @@ conn.execute(text("EXEC my_procedural_thing()").execution_options(autocommit=Tru
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-The method that is cross\-compatible with [1\.x style](../glossary.html#term-1.x-style) and [2\.0
+The method that is cross-compatible with [1.x style](../glossary.html#term-1.x-style) and [2.0
 style](../glossary.html#term-2.0-style) execution is to make use of the [`Connection.begin()`](../core/connections.html#sqlalchemy.engine.Connection.begin "sqlalchemy.engine.Connection.begin") method,
 or the [`Engine.begin()`](../core/connections.html#sqlalchemy.engine.Engine.begin "sqlalchemy.engine.Engine.begin") context manager:
 
@@ -729,7 +729,7 @@ with engine.begin() as conn:
 ```
 
 
-When using [2\.0 style](../glossary.html#term-2.0-style) with the [`create_engine.future`](../core/engines.html#sqlalchemy.create_engine.params.future "sqlalchemy.create_engine")
+When using [2.0 style](../glossary.html#term-2.0-style) with the [`create_engine.future`](../core/engines.html#sqlalchemy.create_engine.params.future "sqlalchemy.create_engine")
 flag, “commit as you go” style may also be used, as the
 [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") features **autobegin** behavior, which takes place
 when a statement is first invoked in the absence of an explicit call to
@@ -746,7 +746,7 @@ with engine.connect() as conn:
 ```
 
 
-When [2\.0 deprecations mode](#migration-20-deprecations-mode) is enabled,
+When [2.0 deprecations mode](#migration-20-deprecations-mode) is enabled,
 a warning will emit when the deprecated “autocommit” feature takes place,
 indicating those places where an explicit transaction should be noted.
 
@@ -760,7 +760,7 @@ and “explicit commit” of transactions. Fifteen years later we now see this
 was essentially a mistake, as SQLAlchemy’s many patterns that attempt to “hide”
 the presence of a transaction make for a more complex API which works
 inconsistently and is extremely confusing to especially those users who are new
-to relational databases and ACID transactions in general. SQLAlchemy 2\.0 will
+to relational databases and ACID transactions in general. SQLAlchemy 2.0 will
 do away with all attempts to implicitly commit transactions, and usage patterns
 will always require that the user demarcate the “beginning” and the “end” of a
 transaction in some way, in the same way as reading or writing to a file in
@@ -778,7 +778,7 @@ don’t understand that databases always use a transaction, whether or not some
 layer is autocommitting it.
 
 
-SQLAlchemy 2\.0 will require that all database actions at every level be
+SQLAlchemy 2.0 will require that all database actions at every level be
 explicit as to how the transaction should be used. For the vast majority
 of Core use cases, it’s the pattern that is already recommended:
 
@@ -820,7 +820,7 @@ with engine.connect() as conn:
 Above, the `engine.connect()` method will return a [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") that
 features **autobegin**, meaning the `begin()` event is emitted when the
 execute method is first used (note however that there is no actual “BEGIN” in
-the Python DBAPI). “autobegin” is a new pattern in SQLAlchemy 1\.4 that
+the Python DBAPI). “autobegin” is a new pattern in SQLAlchemy 1.4 that
 is featured both by [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") as well as the ORM
 [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") object; autobegin allows that the [`Connection.begin()`](../core/connections.html#sqlalchemy.engine.Connection.begin "sqlalchemy.engine.Connection.begin")
 method may be called explicitly when the object is first acquired, for schemes
@@ -836,7 +836,7 @@ no convenient idiomatic patterns for demarcating the use of a resource.
 
 
 
-#### Driver\-level autocommit remains available[¶](#driver-level-autocommit-remains-available "Link to this heading")
+#### Driver-level autocommit remains available
 
 
 True “autocommit” behavior is now widely available with most DBAPI
@@ -846,21 +846,21 @@ discussed at [Setting Transaction Isolation Levels including DBAPI Autocommit](.
 so that the structure of application code does not change when autocommit is
 used; the [`Connection.begin()`](../core/connections.html#sqlalchemy.engine.Connection.begin "sqlalchemy.engine.Connection.begin") context manager as well as
 methods like [`Connection.commit()`](../core/connections.html#sqlalchemy.engine.Connection.commit "sqlalchemy.engine.Connection.commit") may still be used, they are
-simply no\-ops at the database driver level when DBAPI\-level autocommit
+simply no-ops at the database driver level when DBAPI-level autocommit
 is turned on.
 
 
 
 
 
-### “Implicit” and “Connectionless” execution, “bound metadata” removed[¶](#implicit-and-connectionless-execution-bound-metadata-removed "Link to this heading")
+### “Implicit” and “Connectionless” execution, “bound metadata” removed
 
 
 **Synopsis**
 
 
 The ability to associate an [`Engine`](../core/connections.html#sqlalchemy.engine.Engine "sqlalchemy.engine.Engine") with a [`MetaData`](../core/metadata.html#sqlalchemy.schema.MetaData "sqlalchemy.schema.MetaData")
-object, which then makes available a range of so\-called “connectionless”
+object, which then makes available a range of so-called “connectionless”
 execution patterns, is removed:
 
 
@@ -882,7 +882,7 @@ result = t.select().execute()  # no longer supported
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 For schema level patterns, explicit use of an [`Engine`](../core/connections.html#sqlalchemy.engine.Engine "sqlalchemy.engine.Engine")
@@ -891,7 +891,7 @@ may still be used directly as the source of connectivity for a
 [`MetaData.create_all()`](../core/metadata.html#sqlalchemy.schema.MetaData.create_all "sqlalchemy.schema.MetaData.create_all") operation or autoload operation.
 For executing statements, only the [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object
 has a [`Connection.execute()`](../core/connections.html#sqlalchemy.engine.Connection.execute "sqlalchemy.engine.Connection.execute") method (in addition to
-the ORM\-level [`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute") method):
+the ORM-level [`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute") method):
 
 
 
@@ -957,7 +957,7 @@ convenience feature, it has been shown to give rise to several issues:
 
 - Programs that feature extended strings of `engine.execute()` calls have
 become prevalent, overusing a feature that was intended to be seldom used and
-leading to inefficient non\-transactional applications. New users are
+leading to inefficient non-transactional applications. New users are
 confused as to the difference between `engine.execute()` and
 `connection.execute()` and the nuance between these two approaches is
 often not understood.
@@ -970,7 +970,7 @@ to the DBAPI connection which remains in an open transaction, all of which is
 released once the result set has fully consumed the rows waiting within the
 cursor. This means that `Engine.execute` does not actually close out the
 connection resources that it claims to be managing when the call is complete.
-SQLAlchemy’s “autoclose” behavior is well\-tuned enough that users don’t
+SQLAlchemy’s “autoclose” behavior is well-tuned enough that users don’t
 generally report any negative effects from this system, however it remains
 an overly implicit and inefficient system left over from SQLAlchemy’s
 earliest releases.
@@ -988,8 +988,8 @@ result = some_statement.execute()
 
 The above pattern has all the issues of “connectionless” execution, plus it
 relies upon the “bound metadata” pattern, which SQLAlchemy has tried to
-de\-emphasize for many years. This was SQLAlchemy’s very first advertised
-usage model in version 0\.1, which became obsolete almost immediately when
+de-emphasize for many years. This was SQLAlchemy’s very first advertised
+usage model in version 0.1, which became obsolete almost immediately when
 the [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object was introduced and later Python
 context managers provided a better pattern for using resources within a
 fixed scope.
@@ -1004,13 +1004,13 @@ application design.
 
 
 
-#### Many Choices becomes One Choice[¶](#many-choices-becomes-one-choice "Link to this heading")
+#### Many Choices becomes One Choice
 
 
 Overall, the above executional patterns were introduced in SQLAlchemy’s
-very first 0\.1 release before the [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object even existed.
-After many years of de\-emphasizing these patterns, “implicit, connectionless”
-execution and “bound metadata” are no longer as widely used so in 2\.0 we seek
+very first 0.1 release before the [`Connection`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") object even existed.
+After many years of de-emphasizing these patterns, “implicit, connectionless”
+execution and “bound metadata” are no longer as widely used so in 2.0 we seek
 to finally reduce the number of choices for how to execute a statement in
 Core from “many choices”:
 
@@ -1081,15 +1081,15 @@ with engine.connect() as conn:
 
 
 
-### execute() method more strict, execution options are more prominent[¶](#execute-method-more-strict-execution-options-are-more-prominent "Link to this heading")
+### execute() method more strict, execution options are more prominent
 
 
 **Synopsis**
 
 
 The argument patterns that may be used with the [`sqlalchemy.engine.Connection()`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection")
-execute method in SQLAlchemy 2\.0 are highly simplified, removing many previously
-available argument patterns. The new API in the 1\.4 series is described at
+execute method in SQLAlchemy 2.0 are highly simplified, removing many previously
+available argument patterns. The new API in the 1.4 series is described at
 [`sqlalchemy.engine.Connection()`](../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection"). The examples below illustrate the patterns that
 require modification:
 
@@ -1115,12 +1115,12 @@ result = connection.execute(
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 The new [`Connection.execute()`](../core/connections.html#sqlalchemy.engine.Connection.execute "sqlalchemy.engine.Connection.execute") method now accepts a subset of the
-argument styles that are accepted by the 1\.x [`Connection.execute()`](../core/connections.html#sqlalchemy.engine.Connection.execute "sqlalchemy.engine.Connection.execute")
-method, so the following code is cross\-compatible between 1\.x and 2\.0:
+argument styles that are accepted by the 1.x [`Connection.execute()`](../core/connections.html#sqlalchemy.engine.Connection.execute "sqlalchemy.engine.Connection.execute")
+method, so the following code is cross-compatible between 1.x and 2.0:
 
 
 
@@ -1150,7 +1150,7 @@ well as to make room for other options, namely the
 [`Connection.execute.execution_options`](../core/connections.html#sqlalchemy.engine.Connection.execute.params.execution_options "sqlalchemy.engine.Connection.execute") dictionary that is now
 available to provide options on a per statement basis. The method is also
 modified so that its use pattern matches that of the
-[`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute") method, which is a much more prominent API in 2\.0
+[`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute") method, which is a much more prominent API in 2.0
 style.
 
 
@@ -1168,13 +1168,13 @@ given.
 
 
 
-### Result rows act like named tuples[¶](#result-rows-act-like-named-tuples "Link to this heading")
+### Result rows act like named tuples
 
 
 **Synopsis**
 
 
-Version 1\.4 introduces an [all new Result object](migration_14.html#change-result-14-core)
+Version 1.4 introduces an [all new Result object](migration_14.html#change-result-14-core)
 that in turn returns [`Row`](../core/connections.html#sqlalchemy.engine.Row "sqlalchemy.engine.Row") objects, which behave like named
 tuples when using “future” mode:
 
@@ -1194,7 +1194,7 @@ with engine.connect() as conn:
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Application code or test suites that are testing for a particular key
@@ -1206,13 +1206,13 @@ used by code that already knows what columns are present within it.
 **Discussion**
 
 
-Already part of 1\.4, the previous `KeyedTuple` class that was used when
+Already part of 1.4, the previous `KeyedTuple` class that was used when
 selecting rows from the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object has been replaced by the
 [`Row`](../core/connections.html#sqlalchemy.engine.Row "sqlalchemy.engine.Row") class, which is the base of the same [`Row`](../core/connections.html#sqlalchemy.engine.Row "sqlalchemy.engine.Row") that comes
 back with Core statement results when using the
 [`create_engine.future`](../core/engines.html#sqlalchemy.create_engine.params.future "sqlalchemy.create_engine") flag with [`Engine`](../core/connections.html#sqlalchemy.engine.Engine "sqlalchemy.engine.Engine") (when
 the [`create_engine.future`](../core/engines.html#sqlalchemy.create_engine.params.future "sqlalchemy.create_engine") flag is not set, Core result sets use
-the `LegacyRow` subclass, which maintains backwards\-compatible
+the `LegacyRow` subclass, which maintains backwards-compatible
 behaviors for the `__contains__()` method; ORM exclusively uses the
 [`Row`](../core/connections.html#sqlalchemy.engine.Row "sqlalchemy.engine.Row") class directly).
 
@@ -1266,11 +1266,11 @@ See also
 
 
 
-## 2\.0 Migration \- Core Usage[¶](#migration-core-usage "Link to this heading")
+## 2.0 Migration - Core Usage
 
 
 
-### select() no longer accepts varied constructor arguments, columns are passed positionally[¶](#select-no-longer-accepts-varied-constructor-arguments-columns-are-passed-positionally "Link to this heading")
+### select() no longer accepts varied constructor arguments, columns are passed positionally
 
 
 **synopsis**
@@ -1305,14 +1305,14 @@ case_clause = case(
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Only the “generative” style of [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") will be supported. The list
 of columns / tables to SELECT from should be passed positionally. The
-[`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct in SQLAlchemy 1\.4 accepts both the legacy
-styles and the new styles using an auto\-detection scheme, so the code below
-is cross\-compatible with 1\.4 and 2\.0:
+[`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct in SQLAlchemy 1.4 accepts both the legacy
+styles and the new styles using an auto-detection scheme, so the code below
+is cross-compatible with 1.4 and 2.0:
 
 
 
@@ -1347,7 +1347,7 @@ of a SQL statement, should be passed **positionally**. Conversely,
 should be passed **as lists**. For many years, the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select")
 construct could not participate in this convention smoothly because of the
 very legacy calling pattern where the “WHERE” clause would be passed positionally.
-SQLAlchemy 2\.0 finally resolves this by changing the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct
+SQLAlchemy 2.0 finally resolves this by changing the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct
 to only accept the “generative” style that has for many years been the only
 documented style in the Core tutorial.
 
@@ -1381,7 +1381,7 @@ See also
 
 
 
-### insert/update/delete DML no longer accept keyword constructor arguments[¶](#insert-update-delete-dml-no-longer-accept-keyword-constructor-arguments "Link to this heading")
+### insert/update/delete DML no longer accept keyword constructor arguments
 
 
 **Synopsis**
@@ -1410,7 +1410,7 @@ stmt = table.update(table.c.x < 15, preserve_parameter_order=True).values(
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 The following examples illustrate generative method use for the above
@@ -1449,11 +1449,11 @@ manner as that of the [`select()`](../core/selectable.html#sqlalchemy.sql.expres
 
 
 
-## 2\.0 Migration \- ORM Configuration[¶](#migration-orm-configuration "Link to this heading")
+## 2.0 Migration - ORM Configuration
 
 
 
-### Declarative becomes a first class API[¶](#declarative-becomes-a-first-class-api "Link to this heading")
+### Declarative becomes a first class API
 
 
 **Synopsis**
@@ -1462,13 +1462,13 @@ manner as that of the [`select()`](../core/selectable.html#sqlalchemy.sql.expres
 The `sqlalchemy.ext.declarative` package is mostly, with some exceptions,
 moved to the `sqlalchemy.orm` package. The [`declarative_base()`](../orm/mapping_api.html#sqlalchemy.orm.declarative_base "sqlalchemy.orm.declarative_base")
 and [`declared_attr()`](../orm/mapping_api.html#sqlalchemy.orm.declared_attr "sqlalchemy.orm.declared_attr") functions are present without any behavioral
-changes. A new super\-implementation of [`declarative_base()`](../orm/mapping_api.html#sqlalchemy.orm.declarative_base "sqlalchemy.orm.declarative_base")
-known as [`registry`](../orm/mapping_api.html#sqlalchemy.orm.registry "sqlalchemy.orm.registry") now serves as the top\-level ORM configurational
-construct, which also provides for decorator\-based declarative and new
+changes. A new super-implementation of [`declarative_base()`](../orm/mapping_api.html#sqlalchemy.orm.declarative_base "sqlalchemy.orm.declarative_base")
+known as [`registry`](../orm/mapping_api.html#sqlalchemy.orm.registry "sqlalchemy.orm.registry") now serves as the top-level ORM configurational
+construct, which also provides for decorator-based declarative and new
 support for classical mappings that integrate with the declarative registry.
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Change imports:
@@ -1495,7 +1495,7 @@ from sqlalchemy.orm import declarative_base, declared_attr
 After ten years or so of popularity, the `sqlalchemy.ext.declarative`
 package is now integrated into the `sqlalchemy.orm` namespace, with the
 exception of the declarative “extension” classes which remain as Declarative
-extensions. The change is detailed further in the 1\.4 migration guide
+extensions. The change is detailed further in the 1.4 migration guide
 at [Declarative is now integrated into the ORM with new features](migration_14.html#change-5508).
 
 
@@ -1503,7 +1503,7 @@ at [Declarative is now integrated into the ORM with new features](migration_14.h
 See also
 
 
-[ORM Mapped Class Overview](../orm/mapping_styles.html) \- all new unified documentation for
+[ORM Mapped Class Overview](../orm/mapping_styles.html) - all new unified documentation for
 Declarative, classical mapping, dataclasses, attrs, etc.
 
 
@@ -1513,7 +1513,7 @@ Declarative, classical mapping, dataclasses, attrs, etc.
 
 
 
-### The original “mapper()” function now a core element of Declarative, renamed[¶](#the-original-mapper-function-now-a-core-element-of-declarative-renamed "Link to this heading")
+### The original “mapper()” function now a core element of Declarative, renamed
 
 
 **Synopsis**
@@ -1525,7 +1525,7 @@ be invoked by higher level APIs. The new version of this function is the method
 object.
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Code that works with classical mappings should change imports and code from:
@@ -1555,7 +1555,7 @@ mapper_reg.map_imperatively(
 
 
 The above [`registry`](../orm/mapping_api.html#sqlalchemy.orm.registry "sqlalchemy.orm.registry") is also the source for declarative mappings,
-and classical mappings now have access to this registry including string\-based
+and classical mappings now have access to this registry including string-based
 configuration on [`relationship()`](../orm/relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship"):
 
 
@@ -1597,7 +1597,7 @@ as [`registry.map_imperatively()`](../orm/mapping_api.html#sqlalchemy.orm.regist
 
 In addition, the primary rationale used for “classical mapping” is that of
 keeping the [`Table`](../core/metadata.html#sqlalchemy.schema.Table "sqlalchemy.schema.Table") setup distinct from the class. Declarative
-has always allowed this style using so\-called
+has always allowed this style using so-called
 [hybrid declarative](../orm/declarative_tables.html#orm-imperative-table-configuration). However, to
 remove the base class requirement, a first class [decorator](../orm/declarative_mapping.html) form has been added.
 
@@ -1611,7 +1611,7 @@ declarative decorator and classical mapping forms.
 See also
 
 
-[ORM Mapped Class Overview](../orm/mapping_styles.html) \- all new unified documentation for
+[ORM Mapped Class Overview](../orm/mapping_styles.html) - all new unified documentation for
 Declarative, classical mapping, dataclasses, attrs, etc.
 
 
@@ -1619,10 +1619,10 @@ Declarative, classical mapping, dataclasses, attrs, etc.
 
 
 
-## 2\.0 Migration \- ORM Usage[¶](#migration-orm-usage "Link to this heading")
+## 2.0 Migration - ORM Usage
 
 
-The biggest visible change in SQLAlchemy 2\.0 is the use of
+The biggest visible change in SQLAlchemy 2.0 is the use of
 [`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute") in conjunction with [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") to run ORM
 queries, instead of using [`Session.query()`](../orm/session_api.html#sqlalchemy.orm.Session.query "sqlalchemy.orm.Session.query"). As mentioned elsewhere,
 there is no plan to actually remove the [`Session.query()`](../orm/session_api.html#sqlalchemy.orm.Session.query "sqlalchemy.orm.Session.query") API itself,
@@ -1639,10 +1639,10 @@ following the table, and may include additional notes not summarized here.
 
 
 
-**Overview of Major ORM Querying Patterns**[¶](#id1 "Link to this table")
-| [1\.x style](../glossary.html#term-1.x-style) form | [2\.0 style](../glossary.html#term-2.0-style) form | See Also |
+**Overview of Major ORM Querying Patterns**
+| [1.x style](../glossary.html#term-1.x-style) form | [2.0 style](../glossary.html#term-2.0-style) form | See Also |
 | --- | --- | --- |
-| ``` session.query(User).get(42) ``` | ``` session.get(User, 42) ``` | [ORM Query \- get() method moves to Session](#migration-20-get-to-session) |
+| ``` session.query(User).get(42) ``` | ``` session.get(User, 42) ``` | [ORM Query - get() method moves to Session](#migration-20-get-to-session) |
 | ``` session.query(User).all() ``` | ``` session.execute(   select(User) ).scalars().all()  # or  session.scalars(   select(User) ).all() ``` | [ORM Query Unified with Core Select](#migration-20-unify-select) [`Session.scalars()`](../orm/session_api.html#sqlalchemy.orm.Session.scalars "sqlalchemy.orm.Session.scalars") [`Result.scalars()`](../core/connections.html#sqlalchemy.engine.Result.scalars "sqlalchemy.engine.Result.scalars") |
 | ``` session.query(User).\   filter_by(name="some user").\   one() ``` | ``` session.execute(   select(User).   filter_by(name="some user") ).scalar_one() ``` | [ORM Query Unified with Core Select](#migration-20-unify-select) [`Result.scalar_one()`](../core/connections.html#sqlalchemy.engine.Result.scalar_one "sqlalchemy.engine.Result.scalar_one") |
 | ``` session.query(User).\   filter_by(name="some user").\   first() ``` | ``` session.scalars(   select(User).   filter_by(name="some user").   limit(1) ).first() ``` | [ORM Query Unified with Core Select](#migration-20-unify-select) [`Result.first()`](../core/connections.html#sqlalchemy.engine.Result.first "sqlalchemy.engine.Result.first") |
@@ -1650,13 +1650,13 @@ following the table, and may include additional notes not summarized here.
 | ``` session.query(User).\   join(Address).\   filter(     Address.email == "[[email protected]](/cdn-cgi/l/email-protection)"   ).\   all() ``` | ``` session.execute(   select(User).   join(Address).   where(     Address.email == "[[email protected]](/cdn-cgi/l/email-protection)"   ) ).scalars().all() ``` | [ORM Query Unified with Core Select](#migration-20-unify-select) [Joins](../orm/queryguide/select.html#orm-queryguide-joins) |
 | ``` session.query(User).\   from_statement(     text("select * from users")   ).\   all() ``` | ``` session.scalars(   select(User).   from_statement(     text("select * from users")   ) ).all() ``` | [Getting ORM Results from Textual Statements](../orm/queryguide/select.html#orm-queryguide-selecting-text) |
 | ``` session.query(User).\   join(User.addresses).\   options(     contains_eager(User.addresses)   ).\   populate_existing().all() ``` | ``` session.execute(   select(User)   .join(User.addresses)   .options(     contains_eager(User.addresses)   )   .execution_options(       populate_existing=True   ) ).scalars().all() ``` | [ORM Execution Options](../orm/queryguide/api.html#orm-queryguide-execution-options) [Populate Existing](../orm/queryguide/api.html#orm-queryguide-populate-existing) |
-| ``` session.query(User).\   filter(User.name == "foo").\   update(     {"fullname": "Foo Bar"},     synchronize_session="evaluate"   ) ``` | ``` session.execute(   update(User)   .where(User.name == "foo")   .values(fullname="Foo Bar")   .execution_options(     synchronize_session="evaluate"   ) ) ``` | [ORM\-Enabled INSERT, UPDATE, and DELETE statements](../orm/queryguide/dml.html#orm-expression-update-delete) |
+| ``` session.query(User).\   filter(User.name == "foo").\   update(     {"fullname": "Foo Bar"},     synchronize_session="evaluate"   ) ``` | ``` session.execute(   update(User)   .where(User.name == "foo")   .values(fullname="Foo Bar")   .execution_options(     synchronize_session="evaluate"   ) ) ``` | [ORM-Enabled INSERT, UPDATE, and DELETE statements](../orm/queryguide/dml.html#orm-expression-update-delete) |
 | ``` session.query(User).count() ``` | ``` session.scalar(   select(func.count()).   select_from(User) )  # or  session.scalar(   select(func.count(User.id)) ) ``` | [`Session.scalar()`](../orm/session_api.html#sqlalchemy.orm.Session.scalar "sqlalchemy.orm.Session.scalar") |
 
 
 
 
-### ORM Query Unified with Core Select[¶](#orm-query-unified-with-core-select "Link to this heading")
+### ORM Query Unified with Core Select
 
 
 **Synopsis**
@@ -1704,16 +1704,16 @@ users = session.query(User).from_statement(text("select * from users")).all()
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Because the vast majority of an ORM application is expected to make use of
 [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") objects as well as that the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") interface
 being available does not impact the new interface, the object will stay
-around in 2\.0 but will no longer be part of documentation nor will it be
+around in 2.0 but will no longer be part of documentation nor will it be
 supported for the most part. The [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct now suits
 both the Core and ORM use cases, which when invoked via the [`Session.execute()`](../orm/session_api.html#sqlalchemy.orm.Session.execute "sqlalchemy.orm.Session.execute")
-method will return ORM\-oriented results, that is, ORM objects if that’s what
+method will return ORM-oriented results, that is, ORM objects if that’s what
 was requested.
 
 
@@ -1798,13 +1798,13 @@ additions over time that added up to two major APIs that are divergent.
 In SQLAlchemy’s first releases, the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object didn’t exist
 at all. The original idea was that the [`Mapper`](../orm/mapping_api.html#sqlalchemy.orm.Mapper "sqlalchemy.orm.Mapper") construct itself would
 be able to select rows, and that [`Table`](../core/metadata.html#sqlalchemy.schema.Table "sqlalchemy.schema.Table") objects, not classes,
-would be used to create the various criteria in a Core\-style approach. The
+would be used to create the various criteria in a Core-style approach. The
 [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") came along some months / years into SQLAlchemy’s history
 as a user proposal for a new, “buildable” querying object originally called `SelectResults`
 was accepted.
 Concepts like a `.where()` method, which `SelectResults` called `.filter()`,
 were not present in SQLAlchemy previously, and the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct
-used only the “all\-at\-once” construction style that’s now deprecated
+used only the “all-at-once” construction style that’s now deprecated
 at [select() no longer accepts varied constructor arguments, columns are passed positionally](#migration-20-5284).
 
 
@@ -1824,9 +1824,9 @@ completely overlapping in functionality. The major challenge to unifying these
 objects was that the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") object needed to remain **completely
 agnostic of the ORM**. To achieve this, the vast majority of logic from
 [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") has been moved into the SQL compile phase, where
-ORM\-specific compiler plugins receive the
+ORM-specific compiler plugins receive the
 [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") construct and interpret its contents in terms of an
-ORM\-style query, before passing off to the core\-level compiler in order to
+ORM-style query, before passing off to the core-level compiler in order to
 create a SQL string. With the advent of the new
 [SQL compilation caching system](migration_14.html#change-4639),
 the majority of this ORM logic is also cached.
@@ -1836,13 +1836,13 @@ the majority of this ORM logic is also cached.
 See also
 
 
-[ORM Query is internally unified with select, update, delete; 2\.0 style execution available](migration_14.html#change-5159)
+[ORM Query is internally unified with select, update, delete; 2.0 style execution available](migration_14.html#change-5159)
 
 
 
 
 
-### ORM Query \- get() method moves to Session[¶](#orm-query-get-method-moves-to-session "Link to this heading")
+### ORM Query - get() method moves to Session
 
 
 **Synopsis**
@@ -1859,10 +1859,10 @@ user_obj = session.query(User).get(5)
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-In 1\.4 / 2\.0, the [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") object adds a new
+In 1.4 / 2.0, the [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") object adds a new
 [`Session.get()`](../orm/session_api.html#sqlalchemy.orm.Session.get "sqlalchemy.orm.Session.get") method:
 
 
@@ -1876,7 +1876,7 @@ user_obj = session.get(User, 5)
 **Discussion**
 
 
-The [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object is to be a legacy object in 2\.0, as ORM
+The [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object is to be a legacy object in 2.0, as ORM
 queries are now available using the [`select()`](../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") object. As the
 [`Query.get()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.get "sqlalchemy.orm.Query.get") method defines a special interaction with the
 [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") and does not necessarily even emit a query, it’s more
@@ -1893,7 +1893,7 @@ with writing a SQL query.
 
 
 
-### ORM Query \- Joining / loading on relationships uses attributes, not strings[¶](#orm-query-joining-loading-on-relationships-uses-attributes-not-strings "Link to this heading")
+### ORM Query - Joining / loading on relationships uses attributes, not strings
 
 
 **Synopsis**
@@ -1902,7 +1902,7 @@ with writing a SQL query.
 This refers to patterns such as that of [`Query.join()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") as well as
 query options like [`joinedload()`](../orm/queryguide/relationships.html#sqlalchemy.orm.joinedload "sqlalchemy.orm.joinedload") which currently accept a mixture of
 string attribute names or actual class attributes. The string forms
-will all be removed in 2\.0:
+will all be removed in 2.0:
 
 
 
@@ -1918,10 +1918,10 @@ q = session.query(Address).filter(with_parent(u1, "addresses"))
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-Modern SQLAlchemy 1\.x versions support the recommended technique which
+Modern SQLAlchemy 1.x versions support the recommended technique which
 is to use mapped attributes:
 
 
@@ -1937,7 +1937,7 @@ q = session.query(Address).filter(with_parent(u1, User.addresses))
 ```
 
 
-The same techniques apply to [2\.0\-style](../glossary.html#term-1) style use:
+The same techniques apply to [2.0-style](../glossary.html#term-1) style use:
 
 
 
@@ -1962,12 +1962,12 @@ The string calling form is ambiguous and requires that the internals do extra
 work to determine the appropriate path and retrieve the correct mapped
 property. By passing the ORM mapped attribute directly, not only is the
 necessary information passed up front, the attribute is also typed and is
-more potentially compatible with IDEs and pep\-484 integrations.
+more potentially compatible with IDEs and pep-484 integrations.
 
 
 
 
-### ORM Query \- Chaining using lists of attributes, rather than individual calls, removed[¶](#orm-query-chaining-using-lists-of-attributes-rather-than-individual-calls-removed "Link to this heading")
+### ORM Query - Chaining using lists of attributes, rather than individual calls, removed
 
 
 **Synopsis**
@@ -1984,10 +1984,10 @@ q = session.query(User).join("orders", "items", "keywords")
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-Use individual calls to [`Query.join()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") for 1\.x /2\.0 cross compatible
+Use individual calls to [`Query.join()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") for 1.x /2.0 cross compatible
 use:
 
 
@@ -1997,7 +1997,7 @@ q = session.query(User).join(User.orders).join(Order.items).join(Item.keywords)
 ```
 
 
-For [2\.0\-style](../glossary.html#term-1) use, [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") has the same behavior of
+For [2.0-style](../glossary.html#term-1) use, [`Select`](../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") has the same behavior of
 [`Select.join()`](../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join"), and also features a new [`Select.join_from()`](../core/selectable.html#sqlalchemy.sql.expression.Select.join_from "sqlalchemy.sql.expression.Select.join_from")
 method that allows an explicit left side:
 
@@ -2024,7 +2024,7 @@ interface of methods such as [`Select.join()`](../core/selectable.html#sqlalchem
 
 
 
-### ORM Query \- join(…, aliased\=True), from\_joinpoint removed[¶](#orm-query-join-aliased-true-from-joinpoint-removed "Link to this heading")
+### ORM Query - join(…, aliased=True), from_joinpoint removed
 
 
 **Synopsis**
@@ -2047,7 +2047,7 @@ q = (
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 Use explicit aliases instead:
@@ -2074,13 +2074,13 @@ q = (
 The `aliased=True` option on [`Query.join()`](../orm/queryguide/query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") is another feature that
 seems to be almost never used, based on extensive code searches to find
 actual use of this feature. The internal complexity that the `aliased=True`
-flag requires is **enormous**, and will be going away in 2\.0\.
+flag requires is **enormous**, and will be going away in 2.0.
 
 
 Most users aren’t familiar with this flag, however it allows for automatic
 aliasing of elements along a join, which then applies automatic aliasing
 to filter conditions. The original use case was to assist in long chains
-of self\-referential joins, as in the example shown above. However,
+of self-referential joins, as in the example shown above. However,
 the automatic adaption of the filter criteria is enormously
 complicated internally and almost never used in real world applications. The
 pattern also leads to issues such as if filter criteria need to be added
@@ -2098,7 +2098,7 @@ construct itself didn’t exist early on.
 
 
 
-### Using DISTINCT with additional columns, but only select the entity[¶](#using-distinct-with-additional-columns-but-only-select-the-entity "Link to this heading")
+### Using DISTINCT with additional columns, but only select the entity
 
 
 **Synopsis**
@@ -2106,7 +2106,7 @@ construct itself didn’t exist early on.
 
 [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") will automatically add columns in the ORDER BY when
 distinct is used. The following query will select from all User columns
-as well as “address.email\_address” but only return User objects:
+as well as “address.email_address” but only return User objects:
 
 
 
@@ -2123,16 +2123,16 @@ result = (
 ```
 
 
-In version 2\.0, the “email\_address” column will not be automatically added
+In version 2.0, the “email_address” column will not be automatically added
 to the columns clause, and the above query will fail, since relational
-databases won’t allow you to ORDER BY “address.email\_address” when using
+databases won’t allow you to ORDER BY “address.email_address” when using
 DISTINCT if it isn’t also in the columns clause.
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-In 2\.0, the column must be added explicitly. To resolve the issue of only
+In 2.0, the column must be added explicitly. To resolve the issue of only
 returning the main entity object, and not the extra column, use the
 [`Result.columns()`](../core/connections.html#sqlalchemy.engine.Result.columns "sqlalchemy.engine.Result.columns") method:
 
@@ -2157,7 +2157,7 @@ result = session.execute(stmt).columns(User).all()
 
 This case is an example of the limited flexibility of [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query")
 leading to the case where implicit, “magical” behavior needed to be added;
-the “email\_address” column is implicitly added to the columns clause, then
+the “email_address” column is implicitly added to the columns clause, then
 additional internal logic would omit that column from the actual results
 returned.
 
@@ -2169,7 +2169,7 @@ without inconvenience.
 
 
 
-### Selecting from the query itself as a subquery, e.g. “from\_self()”[¶](#selecting-from-the-query-itself-as-a-subquery-e-g-from-self "Link to this heading")
+### Selecting from the query itself as a subquery, e.g. “from_self()”
 
 
 **Synopsis**
@@ -2190,14 +2190,14 @@ q = (
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 The [`aliased()`](../orm/queryguide/api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") construct may be used to emit ORM queries against
 an entity that is in terms of any arbitrary selectable. It has been enhanced
-in version 1\.4 to smoothly accommodate being used multiple times against
+in version 1.4 to smoothly accommodate being used multiple times against
 the same subquery for different entities as well. This can be
-used in [1\.x style](../glossary.html#term-1.x-style) with [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") as below; note that
+used in [1.x style](../glossary.html#term-1.x-style) with [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") as below; note that
 since the final query wants to query in terms of both the `User` and
 `Address` entities, two separate [`aliased()`](../orm/queryguide/api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") constructs are created:
 
@@ -2216,7 +2216,7 @@ q = session.query(ua, aa).order_by(aa.email_address)
 ```
 
 
-The same form may be used in [2\.0 style](../glossary.html#term-2.0-style):
+The same form may be used in [2.0 style](../glossary.html#term-2.0-style):
 
 
 
@@ -2262,7 +2262,7 @@ as well as what entity column or relationship is being considered for a given
 component of the query.
 
 
-SQLAlchemy 1\.4 also features an improved labeling style that no longer requires
+SQLAlchemy 1.4 also features an improved labeling style that no longer requires
 the use of long labels that include the table name in order to disambiguate
 columns of same names from different tables. In the above examples, even if
 our `User` and `Address` entities have overlapping column names, we can
@@ -2301,18 +2301,18 @@ FROM (
 ```
 
 
-[\#5221](https://www.sqlalchemy.org/trac/ticket/5221)
+[#5221](https://www.sqlalchemy.org/trac/ticket/5221)
 
 
 
 
-### Selecting entities from alternative selectables; Query.select\_entity\_from()[¶](#selecting-entities-from-alternative-selectables-query-select-entity-from "Link to this heading")
+### Selecting entities from alternative selectables; Query.select_entity_from()
 
 
 **Synopsis**
 
 
-The `Query.select_entity_from()` method will be removed in 2\.0:
+The `Query.select_entity_from()` method will be removed in 2.0:
 
 
 
@@ -2323,12 +2323,12 @@ user = session.query(User).select_entity_from(subquery).first()
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-As is the case described at [Selecting from the query itself as a subquery, e.g. “from\_self()”](#migration-20-query-from-self), the
+As is the case described at [Selecting from the query itself as a subquery, e.g. “from_self()”](#migration-20-query-from-self), the
 [`aliased()`](../orm/queryguide/api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") object provides a single place that operations like
-“select entity from a subquery” may be achieved. Using [1\.x style](../glossary.html#term-1.x-style):
+“select entity from a subquery” may be achieved. Using [1.x style](../glossary.html#term-1.x-style):
 
 
 
@@ -2343,7 +2343,7 @@ user = session.query(ua).order_by(ua.id).first()
 ```
 
 
-Using [2\.0 style](../glossary.html#term-2.0-style):
+Using [2.0 style](../glossary.html#term-2.0-style):
 
 
 
@@ -2363,7 +2363,7 @@ user = session.execute(select(ua).order_by(ua.id).limit(1)).scalars().first()
 
 
 The points here are basically the same as those discussed at
-[Selecting from the query itself as a subquery, e.g. “from\_self()”](#migration-20-query-from-self). The `Query.select_from_entity()`
+[Selecting from the query itself as a subquery, e.g. “from_self()”](#migration-20-query-from-self). The `Query.select_from_entity()`
 method was another way to instruct the query to load rows for a particular
 ORM mapped entity from an alternate selectable, which involved having the
 ORM apply automatic aliasing to that entity wherever it was used in the
@@ -2376,7 +2376,7 @@ of view as well as how the internals of the SQLAlchemy ORM must handle it.
 
 
 
-### Filtering with `in_()`/`not_in()` no longer accepts explicit subqueries[¶](#filtering-with-in-not-in-no-longer-accepts-explicit-subqueries "Link to this heading")
+### Filtering with `in_()`/`not_in()` no longer accepts explicit subqueries
 
 
 **Synopsis**
@@ -2384,7 +2384,7 @@ of view as well as how the internals of the SQLAlchemy ORM must handle it.
 
 Support for accepting explicit subqueries in specific filtering operations, such
 as [`ColumnOperators.in_()`](../core/sqlelement.html#sqlalchemy.sql.expression.ColumnOperators.in_ "sqlalchemy.sql.expression.ColumnOperators.in_") and
-[`ColumnOperators.not_in()`](../core/sqlelement.html#sqlalchemy.sql.expression.ColumnOperators.not_in "sqlalchemy.sql.expression.ColumnOperators.not_in"), has been removed in 2\.0\. The following
+[`ColumnOperators.not_in()`](../core/sqlelement.html#sqlalchemy.sql.expression.ColumnOperators.not_in "sqlalchemy.sql.expression.ColumnOperators.not_in"), has been removed in 2.0. The following
 legacy usage will raise warnings and is incompatible with the type checking
 system:
 
@@ -2396,10 +2396,10 @@ q = session.query(User).filter(User.id.in_(subq))
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-Under 2\.0, SQLAlchemy will automatically interpret a fully constructed query
+Under 2.0, SQLAlchemy will automatically interpret a fully constructed query
 passed to [`ColumnOperators.in_()`](../core/sqlelement.html#sqlalchemy.sql.expression.ColumnOperators.in_ "sqlalchemy.sql.expression.ColumnOperators.in_") and
 [`ColumnOperators.not_in()`](../core/sqlelement.html#sqlalchemy.sql.expression.ColumnOperators.not_in "sqlalchemy.sql.expression.ColumnOperators.not_in") as a subquery based on the
 implied context:
@@ -2415,7 +2415,7 @@ stmt = session.execute(select(User).filter(User.id.in_(subq)))
 **Partial Migration Notes**
 
 
-A partial migration to 2\.0 in which [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.query.Query") is still utilized,
+A partial migration to 2.0 in which [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.query.Query") is still utilized,
 must be updated for compliance with the new API as well:
 
 
@@ -2428,7 +2428,7 @@ q = session.query(User).filter(User.id.in_(subq))
 
 
 
-### ORM Rows not uniquified by default[¶](#orm-rows-not-uniquified-by-default "Link to this heading")
+### ORM Rows not uniquified by default
 
 
 **Synopsis**
@@ -2455,7 +2455,7 @@ rows = result.all()
 ```
 
 
-**Migrating to 2\.0**
+**Migrating to 2.0**
 
 
 When using a joined load of a collection, it’s required that the
@@ -2497,14 +2497,14 @@ confusing results.
 
 To the degree that having to call [`Result.unique()`](../core/connections.html#sqlalchemy.engine.Result.unique "sqlalchemy.engine.Result.unique") when joined
 eager load collections are used is inconvenient, in modern SQLAlchemy
-the [`selectinload()`](../orm/queryguide/relationships.html#sqlalchemy.orm.selectinload "sqlalchemy.orm.selectinload") strategy presents a collection\-oriented
+the [`selectinload()`](../orm/queryguide/relationships.html#sqlalchemy.orm.selectinload "sqlalchemy.orm.selectinload") strategy presents a collection-oriented
 eager loader that is superior in most respects to [`joinedload()`](../orm/queryguide/relationships.html#sqlalchemy.orm.joinedload "sqlalchemy.orm.joinedload")
 and should be preferred.
 
 
 
 
-### “Dynamic” relationship loaders superseded by “Write Only”[¶](#dynamic-relationship-loaders-superseded-by-write-only "Link to this heading")
+### “Dynamic” relationship loaders superseded by “Write Only”
 
 
 **Synopsis**
@@ -2512,7 +2512,7 @@ and should be preferred.
 
 The `lazy="dynamic"` relationship loader strategy, discussed at
 [Dynamic Relationship Loaders](../orm/large_collections.html#dynamic-relationship), makes use of the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object
-which is legacy in 2\.0\. The “dynamic” relationship is not directly compatible
+which is legacy in 2.0. The “dynamic” relationship is not directly compatible
 with asyncio without workarounds, and additionally it does not fulfill its
 original purpose of preventing iteration of large collections as it has several
 behaviors where this iteration occurs implicitly.
@@ -2521,34 +2521,34 @@ behaviors where this iteration occurs implicitly.
 A new loader strategy known as `lazy="write_only"` is introduced, which
 through the [`WriteOnlyCollection`](../orm/large_collections.html#sqlalchemy.orm.WriteOnlyCollection "sqlalchemy.orm.WriteOnlyCollection") collection class
 provides a very strict “no implicit iteration” API and additionally integrates
-with 2\.0 style statement execution, supporting asyncio as well as
-direct integrations with the new [ORM\-enabled Bulk DML](whatsnew_20.html#change-8360)
+with 2.0 style statement execution, supporting asyncio as well as
+direct integrations with the new [ORM-enabled Bulk DML](whatsnew_20.html#change-8360)
 featureset.
 
 
 At the same time, `lazy="dynamic"` remains **fully supported** in version
-2\.0; applications can delay migrating this particular pattern until they
-are fully on the 2\.0 series.
+2.0; applications can delay migrating this particular pattern until they
+are fully on the 2.0 series.
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
-The new “write only” feature is only available in SQLAlchemy 2\.0, and is
-not part of 1\.4\. At the same time, the `lazy="dynamic"` loader strategy
-remains fully supported in version 2\.0, and even includes new pep\-484
+The new “write only” feature is only available in SQLAlchemy 2.0, and is
+not part of 1.4. At the same time, the `lazy="dynamic"` loader strategy
+remains fully supported in version 2.0, and even includes new pep-484
 and annotated mapping support.
 
 
 Therefore the best strategy for migrating from “dynamic” is to **wait until
-the application is fully running on 2\.0**, then migrate directly from
+the application is fully running on 2.0**, then migrate directly from
 [`AppenderQuery`](../orm/large_collections.html#sqlalchemy.orm.AppenderQuery "sqlalchemy.orm.AppenderQuery"), which is the collection type used by the “dynamic”
 strategy, to [`WriteOnlyCollection`](../orm/large_collections.html#sqlalchemy.orm.WriteOnlyCollection "sqlalchemy.orm.WriteOnlyCollection"), which is the collection type
-used by the “write\_only” strategy.
+used by the “write_only” strategy.
 
 
-Some techniques are available to use `lazy="dynamic"` under 1\.4 in a more
-“2\.0” style however. There are two ways to achieve 2\.0 style querying that’s in
+Some techniques are available to use `lazy="dynamic"` under 1.4 in a more
+“2.0” style however. There are two ways to achieve 2.0 style querying that’s in
 terms of a specific relationship:
 
 
@@ -2594,11 +2594,11 @@ posts = session.scalars(
 
 The original idea was that the [`with_parent()`](../orm/queryguide/api.html#sqlalchemy.orm.with_parent "sqlalchemy.orm.with_parent") function should be
 sufficient, however continuing to make use of special attributes on the
-relationship itself remains appealing, and there’s no reason a 2\.0 style
+relationship itself remains appealing, and there’s no reason a 2.0 style
 construct can’t be made to work here as well.
 
 
-The new “write\_only” loader strategy provides a new kind of collection which
+The new “write_only” loader strategy provides a new kind of collection which
 does not support implicit iteration or item access. Instead, reading the
 contents of the collection is performed by calling upon its `.select()`
 method to help construct an appropriate SELECT statement. The collection
@@ -2623,7 +2623,7 @@ See also
 
 
 
-### Autocommit mode removed from Session; autobegin support added[¶](#autocommit-mode-removed-from-session-autobegin-support-added "Link to this heading")
+### Autocommit mode removed from Session; autobegin support added
 
 
 **Synopsis**
@@ -2649,12 +2649,12 @@ sess.flush()
 ```
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 The main reason a [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") is used in “autocommit” mode
 is so that the [`Session.begin()`](../orm/session_api.html#sqlalchemy.orm.Session.begin "sqlalchemy.orm.Session.begin") method is available, so that framework
-integrations and event hooks can control when this event happens. In 1\.4,
+integrations and event hooks can control when this event happens. In 1.4,
 the [`Session`](../orm/session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") now features [autobegin behavior](migration_14.html#change-5074)
 which resolves this issue; the [`Session.begin()`](../orm/session_api.html#sqlalchemy.orm.Session.begin "sqlalchemy.orm.Session.begin") method may now
 be called:
@@ -2680,28 +2680,28 @@ sess.commit()
 
 The “autocommit” mode is another holdover from the first versions
 of SQLAlchemy. The flag has stayed around mostly in support of allowing
-explicit use of [`Session.begin()`](../orm/session_api.html#sqlalchemy.orm.Session.begin "sqlalchemy.orm.Session.begin"), which is now solved by 1\.4,
+explicit use of [`Session.begin()`](../orm/session_api.html#sqlalchemy.orm.Session.begin "sqlalchemy.orm.Session.begin"), which is now solved by 1.4,
 as well as to allow the use of “subtransactions”, which are also removed in
-2\.0\.
+2.0.
 
 
 
 
-### Session “subtransaction” behavior removed[¶](#session-subtransaction-behavior-removed "Link to this heading")
+### Session “subtransaction” behavior removed
 
 
 **Synopsis**
 
 
 The “subtransaction” pattern that was often used with autocommit mode is
-also deprecated in 1\.4\. This pattern allowed the use of the
+also deprecated in 1.4. This pattern allowed the use of the
 [`Session.begin()`](../orm/session_api.html#sqlalchemy.orm.Session.begin "sqlalchemy.orm.Session.begin") method when a transaction were already begun,
 resulting in a construct called a “subtransaction”, which was essentially
 a block that would prevent the [`Session.commit()`](../orm/session_api.html#sqlalchemy.orm.Session.commit "sqlalchemy.orm.Session.commit") method from actually
 committing.
 
 
-**Migration to 2\.0**
+**Migration to 2.0**
 
 
 To provide backwards compatibility for applications that make use of this
@@ -2780,30 +2780,30 @@ with Session() as session:
 
 
 This pattern has been shown to be confusing in real world applications, and it
-is preferable for an application to ensure that the top\-most level of database
+is preferable for an application to ensure that the top-most level of database
 operations are performed with a single begin/commit pair.
 
 
 
 
 
-## 2\.0 Migration \- ORM Extension and Recipe Changes[¶](#migration-orm-extension-and-recipe-changes "Link to this heading")
+## 2.0 Migration - ORM Extension and Recipe Changes
 
 
 
-### Dogpile cache recipe and Horizontal Sharding uses new Session API[¶](#dogpile-cache-recipe-and-horizontal-sharding-uses-new-session-api "Link to this heading")
+### Dogpile cache recipe and Horizontal Sharding uses new Session API
 
 
 As the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query") object becomes legacy, these two recipes
 which previously relied upon subclassing of the [`Query`](../orm/queryguide/query.html#sqlalchemy.orm.Query "sqlalchemy.orm.Query")
 object now make use of the [`SessionEvents.do_orm_execute()`](../orm/events.html#sqlalchemy.orm.SessionEvents.do_orm_execute "sqlalchemy.orm.SessionEvents.do_orm_execute")
-hook. See the section [Re\-Executing Statements](../orm/session_events.html#do-orm-execute-re-executing) for
+hook. See the section [Re-Executing Statements](../orm/session_events.html#do-orm-execute-re-executing) for
 an example.
 
 
 
 
-### Baked Query Extension Superseded by built\-in caching[¶](#baked-query-extension-superseded-by-built-in-caching "Link to this heading")
+### Baked Query Extension Superseded by built-in caching
 
 
 The baked query extension is superseded by the built in caching system and
@@ -2816,9 +2816,9 @@ See [SQL Compilation Caching](../core/connections.html#sql-caching) for full bac
 
 
 
-## Asyncio Support[¶](#asyncio-support "Link to this heading")
+## Asyncio Support
 
 
-SQLAlchemy 1\.4 includes asyncio support for both Core and ORM.
+SQLAlchemy 1.4 includes asyncio support for both Core and ORM.
 The new API exclusively makes use of the “future” patterns noted above.
 See [Asynchronous IO Support for Core and ORM](migration_14.html#change-3414) for background.

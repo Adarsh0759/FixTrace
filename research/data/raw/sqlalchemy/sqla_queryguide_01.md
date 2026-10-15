@@ -14,12 +14,12 @@ ORM Querying Guide
 This page is part of the [ORM Querying Guide](index.html).
 
 
-Previous: [ORM Querying Guide](index.html) \| Next: [Writing SELECT statements for Inheritance Mappings](inheritance.html)
+Previous: [ORM Querying Guide](index.html) | Next: [Writing SELECT statements for Inheritance Mappings](inheritance.html)
 
 
 
 
-# Writing SELECT statements for ORM Mapped Classes[¶](#writing-select-statements-for-orm-mapped-classes "Link to this heading")
+# Writing SELECT statements for ORM Mapped Classes
 
 
 
@@ -69,25 +69,25 @@ spongebob Spongebob Squarepants
 
 
 
-## Selecting ORM Entities and Attributes[¶](#selecting-orm-entities-and-attributes "Link to this heading")
+## Selecting ORM Entities and Attributes
 
 
 The [`select()`](../../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") construct accepts ORM entities, including mapped
-classes as well as class\-level attributes representing mapped columns, which
-are converted into [ORM\-annotated](../../glossary.html#term-ORM-annotated) [`FromClause`](../../core/selectable.html#sqlalchemy.sql.expression.FromClause "sqlalchemy.sql.expression.FromClause") and
+classes as well as class-level attributes representing mapped columns, which
+are converted into [ORM-annotated](../../glossary.html#term-ORM-annotated) [`FromClause`](../../core/selectable.html#sqlalchemy.sql.expression.FromClause "sqlalchemy.sql.expression.FromClause") and
 [`ColumnElement`](../../core/sqlelement.html#sqlalchemy.sql.expression.ColumnElement "sqlalchemy.sql.expression.ColumnElement") elements at construction time.
 
 
-A [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") object that contains ORM\-annotated entities is normally
+A [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") object that contains ORM-annotated entities is normally
 executed using a [`Session`](../session_api.html#sqlalchemy.orm.Session "sqlalchemy.orm.Session") object, and not a [`Connection`](../../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection")
-object, so that ORM\-related features may take effect, including that
-instances of ORM\-mapped objects may be returned. When using the
+object, so that ORM-related features may take effect, including that
+instances of ORM-mapped objects may be returned. When using the
 [`Connection`](../../core/connections.html#sqlalchemy.engine.Connection "sqlalchemy.engine.Connection") directly, result rows will only contain
-column\-level data.
+column-level data.
 
 
 
-### Selecting ORM Entities[¶](#selecting-orm-entities "Link to this heading")
+### Selecting ORM Entities
 
 
 Below we select from the `User` entity, producing a [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select")
@@ -122,7 +122,7 @@ objects that have just a single element per row, that element holding onto a
 ```
 
 
-When selecting a list of single\-element rows containing ORM entities, it is
+When selecting a list of single-element rows containing ORM entities, it is
 typical to skip the generation of [`Row`](../../core/connections.html#sqlalchemy.engine.Row "sqlalchemy.engine.Row") objects and instead
 receive ORM entities directly. This is most easily achieved by using the
 [`Session.scalars()`](../session_api.html#sqlalchemy.orm.Session.scalars "sqlalchemy.orm.Session.scalars") method to execute, rather than the
@@ -152,7 +152,7 @@ then calling upon [`Result.scalars()`](../../core/connections.html#sqlalchemy.en
 
 
 
-### Selecting Multiple ORM Entities Simultaneously[¶](#selecting-multiple-orm-entities-simultaneously "Link to this heading")
+### Selecting Multiple ORM Entities Simultaneously
 
 
 The [`select()`](../../core/selectable.html#sqlalchemy.sql.expression.select "sqlalchemy.sql.expression.select") function accepts any number of ORM classes and/or
@@ -233,7 +233,7 @@ ORDER BY user_account.id, address.id
 
 
 
-### Selecting Individual Attributes[¶](#selecting-individual-attributes "Link to this heading")
+### Selecting Individual Attributes
 
 
 The attributes on a mapped class, such as `User.name` and
@@ -277,10 +277,10 @@ squidward  [[email protected]](/cdn-cgi/l/email-protection)
 
 
 
-### Grouping Selected Attributes with Bundles[¶](#grouping-selected-attributes-with-bundles "Link to this heading")
+### Grouping Selected Attributes with Bundles
 
 
-The [`Bundle`](api.html#sqlalchemy.orm.Bundle "sqlalchemy.orm.Bundle") construct is an extensible ORM\-only construct that
+The [`Bundle`](api.html#sqlalchemy.orm.Bundle "sqlalchemy.orm.Bundle") construct is an extensible ORM-only construct that
 allows sets of column expressions to be grouped in result rows:
 
 
@@ -323,7 +323,7 @@ See also
 
 
 
-### Selecting ORM Aliases[¶](#selecting-orm-aliases "Link to this heading")
+### Selecting ORM Aliases
 
 
 As discussed in the tutorial at [Using Aliases](../../tutorial/data_select.html#tutorial-using-aliases), to create a
@@ -382,14 +382,14 @@ including:
 
 
 
-### Getting ORM Results from Textual Statements[¶](#getting-orm-results-from-textual-statements "Link to this heading")
+### Getting ORM Results from Textual Statements
 
 
 The ORM supports loading of entities from SELECT statements that come from
 other sources. The typical use case is that of a textual SELECT statement,
 which in SQLAlchemy is represented using the [`text()`](../../core/sqlelement.html#sqlalchemy.sql.expression.text "sqlalchemy.sql.expression.text") construct. A
 [`text()`](../../core/sqlelement.html#sqlalchemy.sql.expression.text "sqlalchemy.sql.expression.text") construct can be augmented with information about the
-ORM\-mapped columns that the statement would load; this can then be associated
+ORM-mapped columns that the statement would load; this can then be associated
 with the ORM entity itself so that ORM objects can be loaded based on this
 statement.
 
@@ -410,7 +410,7 @@ We can add column information to the statement by using the
 object, which takes on a role that is comparable to the [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select")
 construct. The [`TextClause.columns()`](../../core/sqlelement.html#sqlalchemy.sql.expression.TextClause.columns "sqlalchemy.sql.expression.TextClause.columns") method
 is typically passed [`Column`](../../core/metadata.html#sqlalchemy.schema.Column "sqlalchemy.schema.Column") objects or equivalent, and in this
-case we can make use of the ORM\-mapped attributes on the `User` class
+case we can make use of the ORM-mapped attributes on the `User` class
 directly:
 
 
@@ -420,10 +420,10 @@ directly:
 ```
 
 
-We now have an ORM\-configured SQL construct that as given, can load the “id”,
+We now have an ORM-configured SQL construct that as given, can load the “id”,
 “name” and “fullname” columns separately. To use this SELECT statement as a
 source of complete `User` entities instead, we can link these columns to a
-regular ORM\-enabled
+regular ORM-enabled
 [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") construct using the [`Select.from_statement()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.from_statement "sqlalchemy.sql.expression.Select.from_statement")
 method:
 
@@ -475,7 +475,7 @@ perspective.
 
 
 
-### Selecting Entities from Subqueries[¶](#selecting-entities-from-subqueries "Link to this heading")
+### Selecting Entities from Subqueries
 
 
 The [`aliased()`](api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") construct discussed in the previous section
@@ -536,7 +536,7 @@ User(id=14, name='made up name', fullname='made up fullname')
 See also
 
 
-[ORM Entity Subqueries/CTEs](../../tutorial/data_select.html#tutorial-subqueries-orm-aliased) \- in the [SQLAlchemy Unified Tutorial](../../tutorial/index.html#unified-tutorial)
+[ORM Entity Subqueries/CTEs](../../tutorial/data_select.html#tutorial-subqueries-orm-aliased) - in the [SQLAlchemy Unified Tutorial](../../tutorial/index.html#unified-tutorial)
 
 
 [Joining to Subqueries](#orm-queryguide-join-subqueries)
@@ -545,14 +545,14 @@ See also
 
 
 
-### Selecting Entities from UNIONs and other set operations[¶](#selecting-entities-from-unions-and-other-set-operations "Link to this heading")
+### Selecting Entities from UNIONs and other set operations
 
 
 The [`union()`](../../core/selectable.html#sqlalchemy.sql.expression.union "sqlalchemy.sql.expression.union") and [`union_all()`](../../core/selectable.html#sqlalchemy.sql.expression.union_all "sqlalchemy.sql.expression.union_all") functions are the most
 common set operations, which along with other set operations such as
 [`except_()`](../../core/selectable.html#sqlalchemy.sql.expression.except_ "sqlalchemy.sql.expression.except_"), [`intersect()`](../../core/selectable.html#sqlalchemy.sql.expression.intersect "sqlalchemy.sql.expression.intersect") and others deliver an object known as
 a [`CompoundSelect`](../../core/selectable.html#sqlalchemy.sql.expression.CompoundSelect "sqlalchemy.sql.expression.CompoundSelect"), which is composed of multiple
-[`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") constructs joined by a set\-operation keyword. ORM entities may
+[`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") constructs joined by a set-operation keyword. ORM entities may
 be selected from simple compound selects using the [`Select.from_statement()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.from_statement "sqlalchemy.sql.expression.Select.from_statement")
 method illustrated previously at [Getting ORM Results from Textual Statements](#orm-queryguide-selecting-text). In
 this method, the UNION statement is the complete statement that will be
@@ -616,14 +616,14 @@ User(id=3, name='patrick', fullname='Patrick Star')
 See also
 
 
-[Selecting ORM Entities from Unions](../../tutorial/data_select.html#tutorial-orm-union) \- in the [SQLAlchemy Unified Tutorial](../../tutorial/index.html#unified-tutorial)
+[Selecting ORM Entities from Unions](../../tutorial/data_select.html#tutorial-orm-union) - in the [SQLAlchemy Unified Tutorial](../../tutorial/index.html#unified-tutorial)
 
 
 
 
 
 
-## Joins[¶](#joins "Link to this heading")
+## Joins
 
 
 The [`Select.join()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join") and [`Select.join_from()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join_from "sqlalchemy.sql.expression.Select.join_from") methods
@@ -635,13 +635,13 @@ overview of their use from a Core perspective, see [Explicit FROM clauses and JO
 in the [SQLAlchemy Unified Tutorial](../../tutorial/index.html#unified-tutorial).
 
 
-The usage of [`Select.join()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join") in an ORM context for [2\.0 style](../../glossary.html#term-2.0-style)
+The usage of [`Select.join()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join") in an ORM context for [2.0 style](../../glossary.html#term-2.0-style)
 queries is mostly equivalent, minus legacy use cases, to the usage of the
-[`Query.join()`](query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") method in [1\.x style](../../glossary.html#term-1.x-style) queries.
+[`Query.join()`](query.html#sqlalchemy.orm.Query.join "sqlalchemy.orm.Query.join") method in [1.x style](../../glossary.html#term-1.x-style) queries.
 
 
 
-### Simple Relationship Joins[¶](#simple-relationship-joins "Link to this heading")
+### Simple Relationship Joins
 
 
 Consider a mapping between two classes `User` and `Address`,
@@ -696,11 +696,11 @@ of these forms.
 
 
 
-### Chaining Multiple Joins[¶](#chaining-multiple-joins "Link to this heading")
+### Chaining Multiple Joins
 
 
 To construct a chain of joins, multiple [`Select.join()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join") calls may be
-used. The relationship\-bound attribute implies both the left and right side of
+used. The relationship-bound attribute implies both the left and right side of
 the join at once. Consider additional entities `Order` and `Item`, where
 the `User.orders` relationship refers to the `Order` entity, and the
 `Order.items` relationship refers to the `Item` entity, via an association
@@ -758,7 +758,7 @@ JOIN address ON user_account.id = address.user_id
 
 
 
-### Joins to a Target Entity[¶](#joins-to-a-target-entity "Link to this heading")
+### Joins to a Target Entity
 
 
 A second form of [`Select.join()`](../../core/selectable.html#sqlalchemy.sql.expression.Select.join "sqlalchemy.sql.expression.Select.join") allows any mapped entity or core
@@ -800,7 +800,7 @@ when an attempt is made to infer an ON clause for the JOIN.
 
 
 
-### Joins to a Target with an ON Clause[¶](#joins-to-a-target-with-an-on-clause "Link to this heading")
+### Joins to a Target with an ON Clause
 
 
 The third calling form allows both the target entity as well
@@ -818,7 +818,7 @@ FROM user_account JOIN address ON user_account.id = address.user_id
 ```
 
 
-The expression\-based ON clause may also be a [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound
+The expression-based ON clause may also be a [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound
 attribute, in the same way it’s used in
 [Simple Relationship Joins](#orm-queryguide-simple-relationship-join):
 
@@ -841,7 +841,7 @@ when joining to aliased entities; see the section
 
 
 
-### Combining Relationship with Custom ON Criteria[¶](#combining-relationship-with-custom-on-criteria "Link to this heading")
+### Combining Relationship with Custom ON Criteria
 
 
 The ON clause generated by the [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship") construct may
@@ -882,14 +882,14 @@ See the section [Adding Criteria to loader options](relationships.html#loader-op
 
 
 
-### Using Relationship to join between aliased targets[¶](#using-relationship-to-join-between-aliased-targets "Link to this heading")
+### Using Relationship to join between aliased targets
 
 
-When constructing joins using [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound attributes to indicate
-the ON clause, the two\-argument syntax illustrated in
+When constructing joins using [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound attributes to indicate
+the ON clause, the two-argument syntax illustrated in
 [Joins to a Target with an ON Clause](#queryguide-join-onclause) can be expanded to work with the
 [`aliased()`](api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") construct, to indicate a SQL alias as the target of a join
-while still making use of the [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound attribute
+while still making use of the [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound attribute
 to indicate the ON clause, as in the example below, where the `User`
 entity is joined twice to two different [`aliased()`](api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.aliased") constructs
 against the `Address` entity:
@@ -919,7 +919,7 @@ AND address_2.email_address = :email_address_2
 
 The same pattern may be expressed more succinctly using the
 modifier [`PropComparator.of_type()`](../internals.html#sqlalchemy.orm.PropComparator.of_type "sqlalchemy.orm.PropComparator.of_type"), which may be applied to the
-[`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound attribute, passing along the target entity
+[`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound attribute, passing along the target entity
 in order to indicate the target
 in one step. The example below uses [`PropComparator.of_type()`](../internals.html#sqlalchemy.orm.PropComparator.of_type "sqlalchemy.orm.PropComparator.of_type")
 to produce the same SQL statement as the one just illustrated:
@@ -962,7 +962,7 @@ JOIN address ON user_account_1.id = address.user_id
 
 
 
-### Joining to Subqueries[¶](#joining-to-subqueries "Link to this heading")
+### Joining to Subqueries
 
 
 The target of a join may be any “selectable” entity which includes
@@ -1021,12 +1021,12 @@ User(id=3, name='patrick', fullname='Patrick Star') Address(id=4, email_address=
 
 
 
-### Joining to Subqueries along Relationship paths[¶](#joining-to-subqueries-along-relationship-paths "Link to this heading")
+### Joining to Subqueries along Relationship paths
 
 
 The subquery form illustrated in the previous section
 may be expressed with more specificity using a
-[`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound attribute using one of the forms indicated at
+[`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound attribute using one of the forms indicated at
 [Using Relationship to join between aliased targets](#orm-queryguide-joining-relationships-aliased). For example, to create the
 same join while ensuring the join is along that of a particular
 [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship"), we may use the
@@ -1055,7 +1055,7 @@ User(id=3, name='patrick', fullname='Patrick Star') Address(id=4, email_address=
 
 
 
-### Subqueries that Refer to Multiple Entities[¶](#subqueries-that-refer-to-multiple-entities "Link to this heading")
+### Subqueries that Refer to Multiple Entities
 
 
 A subquery that contains columns spanning more than one ORM entity may be
@@ -1093,7 +1093,7 @@ We can create [`aliased()`](api.html#sqlalchemy.orm.aliased "sqlalchemy.orm.alia
 
 
 A [`Select`](../../core/selectable.html#sqlalchemy.sql.expression.Select "sqlalchemy.sql.expression.Select") construct selecting from both entities will render the
-subquery once, but in a result\-row context can return objects of both
+subquery once, but in a result-row context can return objects of both
 `User` and `Address` classes at the same time:
 
 
@@ -1116,7 +1116,7 @@ User(id=2, name='sandy', fullname='Sandy Cheeks') Address(id=3, email_address='[
 
 
 
-### Setting the leftmost FROM clause in a join[¶](#setting-the-leftmost-from-clause-in-a-join "Link to this heading")
+### Setting the leftmost FROM clause in a join
 
 
 In cases where the left side of the current state of
@@ -1228,7 +1228,7 @@ The [`Join`](../../core/selectable.html#sqlalchemy.sql.expression.Join "sqlalche
 
 
 
-## Relationship WHERE Operators[¶](#relationship-where-operators "Link to this heading")
+## Relationship WHERE Operators
 
 
 Besides the use of [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship") constructs within the
@@ -1239,7 +1239,7 @@ the [`Select.where()`](../../core/selectable.html#sqlalchemy.sql.expression.Sele
 
 
 
-### EXISTS forms: has() / any()[¶](#exists-forms-has-any "Link to this heading")
+### EXISTS forms: has() / any()
 
 
 The [`Exists`](../../core/selectable.html#sqlalchemy.sql.expression.Exists "sqlalchemy.sql.expression.Exists") construct was first introduced in the
@@ -1250,7 +1250,7 @@ helper methods that may be used to generate some common EXISTS styles
 of queries in terms of the relationship.
 
 
-For a one\-to\-many relationship such as `User.addresses`, an EXISTS against
+For a one-to-many relationship such as `User.addresses`, an EXISTS against
 the `address` table that correlates back to the `user_account` table
 can be produced using [`PropComparator.any()`](../internals.html#sqlalchemy.orm.PropComparator.any "sqlalchemy.orm.PropComparator.any"). This method accepts
 an optional WHERE criteria to limit the rows matched by the subquery:
@@ -1293,7 +1293,7 @@ WHERE user_account.id = address.user_id))
 
 
 The [`PropComparator.has()`](../internals.html#sqlalchemy.orm.PropComparator.has "sqlalchemy.orm.PropComparator.has") method works in mostly the same way as
-[`PropComparator.any()`](../internals.html#sqlalchemy.orm.PropComparator.any "sqlalchemy.orm.PropComparator.any"), except that it’s used for many\-to\-one
+[`PropComparator.any()`](../internals.html#sqlalchemy.orm.PropComparator.any "sqlalchemy.orm.PropComparator.any"), except that it’s used for many-to-one
 relationships, such as if we wanted to locate all `Address` objects
 which belonged to “sandy”:
 
@@ -1314,19 +1314,19 @@ WHERE user_account.id = address.user_id AND user_account.name = ?)
 
 
 
-### Relationship Instance Comparison Operators[¶](#relationship-instance-comparison-operators "Link to this heading")
+### Relationship Instance Comparison Operators
 
 
-The [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound attribute also offers a few SQL construction
-implementations that are geared towards filtering a [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")\-bound
+The [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound attribute also offers a few SQL construction
+implementations that are geared towards filtering a [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship")-bound
 attribute in terms of a specific instance of a related object, which can unpack
 the appropriate attribute values from a given [persistent](../../glossary.html#term-persistent) (or less
 commonly a [detached](../../glossary.html#term-detached)) object instance and construct WHERE criteria
 in terms of the target [`relationship()`](../relationship_api.html#sqlalchemy.orm.relationship "sqlalchemy.orm.relationship").
 
 
-- **many to one equals comparison** \- a specific object instance can be
-compared to many\-to\-one relationship, to select rows where the
+- **many to one equals comparison** - a specific object instance can be
+compared to many-to-one relationship, to select rows where the
 foreign key of the target entity matches the primary key value of the
 object given:
 
@@ -1341,7 +1341,7 @@ FROM address
 WHERE :param_1 = address.user_id
 
 ```
-- **many to one not equals comparison** \- the not equals operator may also
+- **many to one not equals comparison** - the not equals operator may also
 be used:
 
 
@@ -1353,8 +1353,8 @@ FROM address
 WHERE address.user_id != :user_id_1 OR address.user_id IS NULL
 
 ```
-- **object is contained in a one\-to\-many collection** \- this is essentially
-the one\-to\-many version of the “equals” comparison, select rows where the
+- **object is contained in a one-to-many collection** - this is essentially
+the one-to-many version of the “equals” comparison, select rows where the
 primary key equals the value of the foreign key in a related object:
 
 
@@ -1368,10 +1368,10 @@ FROM user_account
 WHERE user_account.id = :param_1
 
 ```
-- **An object has a particular parent from a one\-to\-many perspective** \- the
+- **An object has a particular parent from a one-to-many perspective** - the
 [`with_parent()`](api.html#sqlalchemy.orm.with_parent "sqlalchemy.orm.with_parent") function produces a comparison that returns rows
 which are referenced by a given parent, this is essentially the
-same as using the `==` operator with the many\-to\-one side:
+same as using the `==` operator with the many-to-one side:
 
 
 

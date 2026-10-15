@@ -8,7 +8,7 @@ source_url: "https://docs.pydantic.dev/latest/concepts/validators/"
 retrieved_at: "2026-10-15"
 ---
 
-In addition to Pydantic’s [built\-in validation capabilities](/docs/validation/latest/concepts/fields/#field-constraints),
+In addition to Pydantic’s [built-in validation capabilities](/docs/validation/latest/concepts/fields/#field-constraints),
 you can leverage custom validators at the field and model levels to enforce more complex constraints
 and ensure the integrity of your data.
 
@@ -527,7 +527,7 @@ decorator.
 
 
 - ***After* validators**: run after the whole model has been validated. As such, they are defined as
-*instance* methods and can be seen as post\-initialization hooks. Important note: the validated instance
+*instance* methods and can be seen as post-initialization hooks. Important note: the validated instance
 should be returned.
 
 
@@ -631,7 +631,7 @@ To raise a validation error, three types of exceptions can be used:
 
 - [`ValueError`](https://docs.python.org/3/builtins/exceptions.html#ValueError): this is the most common exception raised inside validators.
 - [`AssertionError`](https://docs.python.org/3/builtins/exceptions.html#AssertionError): using the [assert](https://docs.python.org/3/reference/simple_stmts.html#assert) statement also works, but be aware that these statements
-are skipped when Python is run with the [\-O](https://docs.python.org/3/using/cmdline.html#cmdoption-O) optimization flag.
+are skipped when Python is run with the [-O](https://docs.python.org/3/using/cmdline.html#cmdoption-O) optimization flag.
 - [`PydanticCustomError`](/docs/validation/latest/api/pydantic-core/pydantic_core/#pydantic_core.PydanticCustomError): a bit more verbose, but provides extra flexibility:
 
 
