@@ -29,7 +29,28 @@ class DebugRequest(BaseModel):
     expected_behavior: Optional[str] = None
 
 
-class EvidencePassage(BaseModel):
+class RawDocument(BaseModel):
+    """One source file as loaded from research/data/raw/ before chunking."""
+
+    doc_id: str
+    source_url: Optional[str] = None
+    title: str
+    package: str
+    version_range: Optional[str] = None
+    doc_type: str
+    published_at: Optional[str] = None
+    retrieved_at: Optional[str] = None
+    text: str
+
+
+class IndexedChunk(BaseModel):
+    """
+    One heading-bounded chunk of a RawDocument, ready to be embedded/indexed.
+    `compatibility` is set by version_filter.py at retrieval time against a
+    specific target_version - ingestion never guesses it, so it stays "unknown"
+    here (DECISIONS.md 1.6).
+    """
+
     doc_id: str
     source_url: Optional[str] = None
     title: str
@@ -39,10 +60,13 @@ class EvidencePassage(BaseModel):
     section_heading: Optional[str] = None
     text: str
     published_at: Optional[str] = None
+    retrieved_at: Optional[str] = None
+    compatibility: CompatibilityStatus = "unknown"
+
+
+class EvidencePassage(IndexedChunk):
     retrieval_score: float
     retrieval_method: RetrievalMethod
-    # Never defaulted to "compatible" when unknown - see DECISIONS.md 1.6.
-    compatibility: CompatibilityStatus = "unknown"
 
 
 class GeneratedClaim(BaseModel):
@@ -83,4 +107,4 @@ class DebugResponse(BaseModel):
     model_metadata: dict = Field(default_factory=dict, alias="model_config")
     latency_ms: float
 
-    model_config = ConfigDict(populate_by_name=True)
+    model_config = ConfigDict(populate_by_name=True, protected_namespaces=())

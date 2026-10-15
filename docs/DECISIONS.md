@@ -135,12 +135,12 @@ If verification adds latency/cost without moving unsupported-recommendation-rate
 
 What's actually scaffolded and running as of this writing (update this section as real pipeline code lands — don't let it drift from git history):
 
-- `ai-service/`: FastAPI app with `/health` and `/config` only. `schemas.py` defines the full contract (`DebugRequest`, `EvidencePassage`, `GeneratedClaim`, `VerifiedClaim`, `DebugResponse`). Retrieval/generation/verification modules are not yet implemented — `ai-service/app/{ingestion,retrieval,generation,verification}/` are empty directories.
+- `ai-service/`: FastAPI app with `/health` and `/config` only. `schemas.py` defines the full contract (`DebugRequest`, `RawDocument`, `IndexedChunk`, `EvidencePassage`, `GeneratedClaim`, `VerifiedClaim`, `DebugResponse`). **Ingestion is implemented and tested**: `ingestion/loaders.py` (YAML-front-matter Markdown loader), `ingestion/chunking.py` (heading-bounded chunking, H2-H4), `ingestion/metadata.py` (stable per-chunk IDs, metadata inheritance, compatibility always starts "unknown"). 12 pytest tests passing. Retrieval/generation/verification modules (`ai-service/app/{retrieval,generation,verification}/`) are still empty directories.
 - `backend/`: Express app with `/api/health` only, tested with Jest+Supertest. No `/api/debug` forwarding yet, no MongoDB models yet.
 - `frontend/`: Vite+React scaffold with a single `DebugPage` that confirms backend connectivity. None of `DebugForm`/`DiagnosisPanel`/`EvidencePanel`/`ClaimVerification`/`StatusBadge` exist yet — intentionally deferred until there's a real `/api/debug` response shape to render.
-- `research/`: config YAMLs for B1/B2/B3/B5 exist and encode the decisions above. No corpus, no scripts, no predictions yet.
+- `research/`: config YAMLs for B1/B2/B3/B5 exist. **Pilot corpus exists**: `research/data/raw/{pydantic,sqlalchemy}/` holds 4 real documentation pages (Pydantic migration guide + validators concept page; SQLAlchemy 2.0 migration guide + ORM query guide), fetched verbatim from the official docs sites and converted to Markdown with front-matter metadata (not LLM-paraphrased — exact text matters for evidence grounding). `research/scripts/ingest_corpus.py` runs the full load→chunk→metadata pipeline and produced `research/data/processed/chunks.jsonl` (111 chunks). No retrieval index, no case dataset, no predictions yet.
 - CI (`.github/workflows/tests.yml`) runs `ai-service` pytest and `backend` Jest on push/PR.
 
-Next concrete step: build the pilot corpus (`research/data/raw/`) for Pydantic + SQLAlchemy, then `ai-service/app/ingestion/` (loaders + heading-based chunking + metadata), then BM25/dense retrieval — i.e., start of Milestone 2.
+Next concrete step: `ai-service/app/retrieval/` — BM25 index + dense embeddings (sentence-transformers/FAISS) over `research/data/processed/chunks.jsonl`, then hybrid merge. After that, start writing the first 20-30 pilot debugging cases (`research/data/processed/` case records) against this corpus.
 
 Related: [frontend.md](frontend.md) [backend.md](backend.md) [ai-service.md](ai-service.md) [research.md](research.md)
