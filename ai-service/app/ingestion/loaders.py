@@ -7,11 +7,12 @@ Front-matter, not filename parsing, is the source of truth for metadata -
 filenames are free-form.
 """
 
+import json
 from pathlib import Path
 
 import yaml
 
-from app.schemas import RawDocument
+from app.schemas import IndexedChunk, RawDocument
 
 FRONTMATTER_DELIMITER = "---"
 
@@ -51,3 +52,14 @@ def load_raw_documents(raw_dir: Path) -> list[RawDocument]:
     """Recursively loads every .md file under raw_dir into a RawDocument."""
     paths = sorted(Path(raw_dir).rglob("*.md"))
     return [load_document(path) for path in paths]
+
+
+def load_indexed_chunks(jsonl_path: Path) -> list[IndexedChunk]:
+    """Loads the output of research/scripts/ingest_corpus.py for indexing."""
+    chunks = []
+    with Path(jsonl_path).open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                chunks.append(IndexedChunk(**json.loads(line)))
+    return chunks
