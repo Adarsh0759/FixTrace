@@ -29,6 +29,32 @@ class DebugRequest(BaseModel):
     expected_behavior: Optional[str] = None
 
 
+class ResearchCase(BaseModel):
+    """
+    One gold-labeled debugging case for evaluation. `reviewed` defaults False -
+    drafted cases are candidates, not ground truth, until a human sets it True
+    (DECISIONS.md / the project brief: an LLM is never the sole authority on
+    gold labels). Scripts that compute metrics should refuse to treat an
+    unreviewed case as gold.
+    """
+
+    case_id: str
+    question: str
+    error_message: Optional[str] = None
+    code_snippet: Optional[str] = None
+    language: str
+    package: str
+    target_version: str
+    environment: Optional[Environment] = None
+    gold_diagnosis: str
+    accepted_fixes: list[str] = Field(default_factory=list)
+    gold_evidence_ids: list[str] = Field(default_factory=list)
+    expected_action: DecisionStatus
+    case_category: str
+    split: str
+    reviewed: bool = False
+
+
 class RawDocument(BaseModel):
     """One source file as loaded from research/data/raw/ before chunking."""
 

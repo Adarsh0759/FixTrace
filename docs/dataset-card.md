@@ -21,6 +21,16 @@ Migration guides were chosen specifically because they're where real version-con
 
 Both Pydantic and SQLAlchemy are MIT-licensed, and in both repos the documentation source lives in the same repository under the same root `LICENSE` as the code (`pydantic/docs/`, `sqlalchemy/doc/`) — confirmed by inspecting `LICENSE` and the repo tree directly on GitHub (2026-10-15). SQLAlchemy's license text explicitly extends to "this software **and associated documentation files**." This permits copying/redistribution with attribution retained, which this corpus does via the `source_url` field carried on every chunk. This is a pilot-scale, clearly-attributed research corpus, not a verbatim re-publication of either project's docs site — if the corpus grows to include sources with different licenses (e.g. Stack Overflow, GitHub issues under their own ToS), redo this check per source before ingesting.
 
+## Pilot case dataset
+
+`research/data/processed/cases_pilot.jsonl` holds 20 draft debugging cases against this corpus (17 ANSWER, 1 QUALIFY, 2 ABSTAIN), covering 9 `case_category` values (version_conflict, deprecated_api, behavior_change, moved_api, renamed_api, removed_feature, api_usage, partial_evidence, insufficient_evidence). **All 20 have `"reviewed": false`** - these are candidates I drafted grounded in the actual corpus text, not approved gold labels. Per the project's own rule (an LLM is never the sole authority on ground truth), nothing here should be treated as gold until a human reviews and flips `reviewed` to `true`. Validate with `research/scripts/validate_cases.py`, which checks schema conformance, rejects duplicate `case_id`s, and cross-checks every `gold_evidence_id` against the real corpus (an ABSTAIN case citing evidence is flagged as an error).
+
+**Retrieval-recall sanity check** (not a formal metric run - that's Milestone 4): running each case's question through the actual hybrid retriever, 16/18 evaluable cases (excluding the 2 ABSTAIN cases, which have no gold evidence) found all gold evidence IDs in the top 8 results after version filtering. Two did not:
+- `CASE-010` (pydantic v1 user mistakenly using `@field_validator`) - the gold chunk `PYD-MIGRATION-01-11` never made top 8.
+- `CASE-003` (partial) - same chunk, same issue.
+
+Root cause: `PYD-MIGRATION-01-11` is a large (2585-char), multi-topic chunk covering `@validator` deprecation, `@root_validator` deprecation, `each_item` removal, and `always=True`/`validate_default` behavior all at once. For queries that only match its opening sentence, more topically-focused sibling chunks (`PYD-MIGRATION-01-12`) outrank it. This is a real chunk-granularity/dilution effect worth investigating later (e.g. splitting large H3 sections further, or weighting the first sentence of a chunk more heavily) - it was **not** fixed by rewording the cases to make retrieval succeed, since that would be tuning the dataset to flatter the system rather than reporting what actually happened (see [DECISIONS.md](DECISIONS.md) §1.11, "comparisons are fair by construction").
+
 ## Known limitations (pilot stage)
 
 - Only 4 source documents, 2 libraries — nowhere near the 150-250 case target; this is corpus material, not yet case data.
